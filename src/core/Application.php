@@ -13,18 +13,24 @@ class Application
 {
     private Container $container;
 
+    public function __construct()
+    {
+        $this->container = Container::getInstance();
+    }
+
     public function handleRequest(Request $request): void
     {
         try {
-            $router = new Router();
+            $router = $this->container->make(Router::class);
             $router->get("/view/{id:\d+}/{data:\d+}", [HomeController::class, "view"]);
             $router->get("/", [HomeController::class, "index"]);
 
-            $dispatcher = new Dispatcher($router);
+            $dispatcher = $this->container->make(Dispatcher::class);
 
-            $dispatcher->dispatch($request);
+            print_r($dispatcher->dispatch($request));
         } catch (Exception $exception) {
             // TODO: add error handler
+            print_r($exception->getMessage());
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Core\Container\Container;
 use Core\Http\Request;
@@ -22,7 +23,7 @@ class Application
     {
         try {
             $router = $this->container->make(Router::class);
-            $router->get("/view/{id:\d+}/{data:\d+}", [HomeController::class, "view"]);
+            $router->get("/signin", [AuthController::class, "signIn"]);
             $router->get("/", [HomeController::class, "index"]);
 
             $dispatcher = $this->container->make(Dispatcher::class);

@@ -1,0 +1,8 @@
+/.osp
+/vendor
+.env
+.env.dev
+.env.production
+/.fleet
+/.idea
+/.vscode

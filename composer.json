@@ -1,0 +1,21 @@
+{
+  "name": "dmitry/only.local",
+  "description": "Test task",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/app/",
+      "Core\\": "src/core/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Dmitry Pavlukov"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^8.1",
+    "ext-pdo": "*"
+  }
+}

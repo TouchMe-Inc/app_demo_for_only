@@ -18,7 +18,6 @@ class Container
      */
     private array $instances = [];
 
-
     /**
      * Create singleton instance.
      *
@@ -26,11 +25,11 @@ class Container
      */
     public static function getInstance(): Container
     {
-        if (is_null(static::$instance)) {
-            static::$instance = new static;
+        if (is_null(self::$instance)) {
+            self::$instance = new self;
         }
 
-        return static::$instance;
+        return self::$instance;
     }
 
     /**
@@ -130,5 +129,21 @@ class Container
         $className = $parameter->getType()->getName();
 
         return $this->make($className);
+    }
+
+    private function __construct()
+    {
+    }
+
+    private function __clone()
+    {
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function __wakeup()
+    {
+        throw new \Exception("Cannot unserialize a singleton");
     }
 }

@@ -102,7 +102,7 @@ class Router
      */
     private function addRoute(string $method, string $uri, mixed $handler): void
     {
-        $route = new Route($uri, $method, $handler);
+        $route = new Route($method, $uri, $handler);
         $this->routes->add($route);
     }
 

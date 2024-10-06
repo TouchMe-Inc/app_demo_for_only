@@ -24,17 +24,18 @@ class Request
 
     private string $content;
 
+
     /**
      * @param array $get
      * @param array $post
-     * @param array $cookies
      * @param array $server
+     * @param array $cookies
      * @param array $files
      */
-    public function __construct(array $get = [], array $post = [], array $cookies = [], array $server = [], array $files = [])
+    public function __construct(array $get = [], array $post = [], array $server = [], array $cookies = [], array $files = [])
     {
-        $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->uri = $_SERVER['REQUEST_URI'];
+        $this->method = $server['REQUEST_METHOD'];
+        $this->uri = $server['REQUEST_URI'];
     }
 
     /**

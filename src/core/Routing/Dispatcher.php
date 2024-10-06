@@ -2,6 +2,7 @@
 
 namespace Core\Routing;
 
+use Core\Container\Container;
 use Core\Http\Request;
 use Exception;
 
@@ -12,15 +13,18 @@ class Dispatcher
      */
     private Router $router;
 
+    private Container $container;
+
     function __construct(Router $router)
     {
         $this->router = $router;
+        $this->container = Container::getInstance();
     }
 
     /**
      * @throws Exception
      */
-    public function dispatch(Request $request): void
+    public function dispatch(Request $request)
     {
         $route = $this->router->match($request);
 
@@ -36,8 +40,28 @@ class Dispatcher
             $callbackParameters = array_combine($route->getVariableNames(), $variableValues);
         }
 
-        $response = call_user_func_array($route->getCallable(), $callbackParameters);
+        $resolvedHandler = $this->resolveHandler($route->getHandler());
 
-        var_dump($response);
+        $response = call_user_func_array($resolvedHandler, $callbackParameters);
+
+        return $response;
+    }
+
+    /**
+     * @param mixed $handler
+     * @return callable
+     * @throws Exception
+     */
+    private function resolveHandler(\Closure|array $handler): callable
+    {
+        if (is_array($handler) && is_string($handler[0])) {
+            $handler[0] = $this->container->make($handler[0]);
+        }
+
+        if (is_callable($handler)) {
+            return $handler;
+        }
+
+        throw new Exception("Handler '$handler' not resolved.");
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Core\Routing;
 
+use Closure;
 use Exception;
 
 class Route
@@ -22,28 +23,30 @@ class Route
     private array $variableNames;
 
     /**
-     * @var callable
+     * @var mixed
      */
-    private $callable;
+    private Closure|array $handler;
 
 
     /**
-     * @param $method
-     * @param $uri
-     * @param $handler
+     * Create route instance.
+     *
+     * @param string $method
+     * @param string $uri
+     * @param mixed $handler
      * @throws Exception
      */
-    public function __construct($method, $uri, $handler)
+    public function __construct(string $method, string $uri, Closure|array $handler)
     {
         $this->method = $method;
 
         list($regex, $variableNames) = $this->parseUri($uri);
 
-        $this->regex = '~^' . $regex . '$~';
+        $this->regex = "~^{$regex}\$~";
 
         $this->variableNames = $variableNames;
 
-        $this->callable = $this->parseHandler($handler);
+        $this->handler = $handler;
     }
 
     /**
@@ -71,11 +74,11 @@ class Route
     }
 
     /**
-     * @return callable
+     * @return Closure|array
      */
-    public function getCallable(): callable
+    public function getHandler(): Closure|array
     {
-        return $this->callable;
+        return $this->handler;
     }
 
     /**
@@ -152,23 +155,5 @@ class Route
         }
 
         return [implode('', $regex), $variableNames];
-    }
-
-    /**
-     * @param mixed $handler
-     * @return callable
-     * @throws Exception
-     */
-    private function parseHandler(mixed $handler): callable
-    {
-        if (is_array($handler) && is_string($handler[0])) {
-            $handler[0] = new $handler[0];
-        }
-
-        if (is_callable($handler)) {
-            return $handler;
-        }
-
-        throw new Exception("Handler '$handler' does not exist.");
     }
 }

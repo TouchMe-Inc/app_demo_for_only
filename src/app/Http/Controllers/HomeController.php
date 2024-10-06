@@ -8,9 +8,4 @@ class HomeController
     {
         return "index";
     }
-
-    public function view($data, $id): string
-    {
-        return "view id = " . $id . ' with data = ' . $data;
-    }
 }

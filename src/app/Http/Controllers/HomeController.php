@@ -12,9 +12,16 @@ class HomeController
     {
         // TODO: Simplify this
 
-        return (new NativeRender())->render(
-            Application::getInstance()->getBasePath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . "Views/home.php",
+        $render = new NativeRender();
+
+        $page = $render->render(
+            Application::getInstance()->getBasePath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . "Views/pages/home.php",
             ["customString" => "Is my custom string"]
+        );
+
+        return $render->render(
+            Application::getInstance()->getBasePath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . "Views/layouts/base.php",
+            ["slot" => $page]
         );
     }
 }

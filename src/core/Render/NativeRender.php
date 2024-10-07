@@ -12,7 +12,7 @@ class NativeRender implements Renderer
             throw new \Exception("Template $template does not exist");
         }
 
-        extract($data);
+        extract($data, EXTR_SKIP);
 
         ob_start();
 

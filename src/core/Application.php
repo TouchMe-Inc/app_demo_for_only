@@ -36,10 +36,10 @@ class Application
     public static function create(string $basePath = ''): self
     {
         if (is_null(self::$instance)) {
-            self::$instance = new self($basePath);
+            return self::$instance = new self($basePath);
         }
 
-        return self::$instance;
+        throw new Exception("Application already initialized");
     }
 
     public function getContainer(): Container

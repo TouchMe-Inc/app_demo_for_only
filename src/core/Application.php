@@ -54,9 +54,14 @@ class Application
         print_r($dispatcher->dispatch($request));
     }
 
+    public function getBasePath($path = ''): string
+    {
+        return $this->basePath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+    }
+
     public function getConfigPath($path = ''): string
     {
-        return $this->basePath . DIRECTORY_SEPARATOR . 'config' . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->getBasePath('config' . ($path ? DIRECTORY_SEPARATOR . $path : $path));
     }
 
     private function bootstrap(): void

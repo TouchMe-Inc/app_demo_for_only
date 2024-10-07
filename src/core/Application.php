@@ -14,8 +14,13 @@ class Application
     /**
      * @var self|null
      */
-    private static Application|null $instance = null;
+    private static self|null $instance = null;
 
+    /**
+     * Path to the src directory.
+     *
+     * @var string
+     */
     private string $basePath;
 
     private Container $container;
@@ -39,7 +44,7 @@ class Application
             return self::$instance = new self($basePath);
         }
 
-        throw new Exception("Application already initialized");
+        throw new Exception("Application already initialized.");
     }
 
     public function getContainer(): Container
@@ -91,6 +96,6 @@ class Application
      */
     public function __wakeup()
     {
-        throw new Exception("Cannot unserialize a singleton");
+        throw new Exception("Cannot unserialize a singleton.");
     }
 }

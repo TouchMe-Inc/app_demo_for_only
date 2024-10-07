@@ -17,7 +17,7 @@ class Application
     /**
      * @var self|null
      */
-    private static Application|null $instance;
+    private static Application|null $instance =  null;
 
     private string $basePath;
 

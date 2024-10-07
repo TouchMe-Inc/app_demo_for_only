@@ -33,6 +33,9 @@ class Application
         SetExceptionHandler::class
     ];
 
+    /**
+     * @throws Exception
+     */
     public static function create(string $basePath = ''): self
     {
         if (is_null(self::$instance)) {
@@ -49,10 +52,6 @@ class Application
 
     public function handleRequest(Request $request): void
     {
-        $router = $this->getContainer()->make(Router::class);
-        $router->get("/signin", [AuthController::class, "signIn"]);
-        $router->get("/", [HomeController::class, "index"]);
-
         $dispatcher = $this->getContainer()->make(Dispatcher::class);
 
         print_r($dispatcher->dispatch($request));

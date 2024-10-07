@@ -35,7 +35,8 @@ class Request
     public function __construct(array $get = [], array $post = [], array $server = [], array $cookies = [], array $files = [])
     {
         $this->method = $server['REQUEST_METHOD'];
-        $this->uri = $server['REQUEST_URI'];
+
+        $this->uri = $this->prepareUri($server['REQUEST_URI']);;
     }
 
     /**
@@ -60,5 +61,14 @@ class Request
     public function getUri(): string
     {
         return $this->uri;
+    }
+
+    private function prepareUri(string $uri): string
+    {
+        if (str_contains($uri, '?')) {
+            $uri = substr($uri, 0, strpos($uri, '?'));
+        }
+
+        return $uri;
     }
 }

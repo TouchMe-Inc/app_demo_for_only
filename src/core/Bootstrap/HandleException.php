@@ -8,7 +8,7 @@ use Core\Exceptions\ExceptionHandler;
 use ErrorException;
 use Throwable;
 
-class SetExceptionHandler implements Bootstrapper
+class HandleException implements Bootstrapper
 {
 
     private Application $app;
@@ -23,7 +23,7 @@ class SetExceptionHandler implements Bootstrapper
 
     public function handleException(Throwable $e): void
     {
-        $this->app->getContainer()->make(ExceptionHandler::class)->handle($e);
+        $this->handler()->handle($e);
     }
 
     /**
@@ -39,5 +39,10 @@ class SetExceptionHandler implements Bootstrapper
         if (error_reporting() & $level) {
             throw new ErrorException($message, 0, $level, $fileName, $line);
         }
+    }
+
+    private function handler(): ExceptionHandler
+    {
+        return $this->app->getContainer()->make(ExceptionHandler::class);
     }
 }

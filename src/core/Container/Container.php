@@ -5,6 +5,7 @@ namespace Core\Container;
 use Exception;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionParameter;
 
 class Container
 {
@@ -101,32 +102,44 @@ class Container
 
         $dependencies = $constructor->getParameters();
 
+        $arguments = $this->prepareArguments($dependencies);
+
+        return $reflector->newInstanceArgs($arguments);
+    }
+
+    /**
+     * @param array $dependencies
+     * @return array
+     * @throws ReflectionException
+     * @throws Exception
+     */
+    private function prepareArguments(array $dependencies): array
+    {
         $arguments = [];
 
         foreach ($dependencies as $dependency) {
             $arguments[] = $dependency->getType()->isBuiltin() ? $this->prepareBuiltin($dependency) : $this->prepareNotBuiltin($dependency);
         }
 
-        return $reflector->newInstanceArgs($arguments);
+        return $arguments;
     }
 
     /**
      * @throws Exception
      */
-    private function prepareBuiltin(\ReflectionParameter $parameter)
+    private function prepareBuiltin(ReflectionParameter $parameter)
     {
         if ($parameter->isDefaultValueAvailable()) {
-
             return $parameter->getDefaultValue();
         }
 
-        throw new Exception("Default value for parameter {$parameter->getName()} is not defined");
+        throw new Exception("Parameter '{$parameter->getName()}' in class '{$parameter->getDeclaringClass()->getName()}' unresolvable");
     }
 
     /**
      * @throws ReflectionException
      */
-    private function prepareNotBuiltin(\ReflectionParameter $parameter)
+    private function prepareNotBuiltin(ReflectionParameter $parameter)
     {
         if ($parameter->isOptional()) {
             return $parameter->getDefaultValue();

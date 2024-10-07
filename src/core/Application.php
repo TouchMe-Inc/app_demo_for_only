@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Core\Bootstrap\CreateDatabaseConnection;
 use Core\Bootstrap\LoadConfiguration;
 use Core\Bootstrap\SetExceptionHandler;
 use Core\Container\Container;
@@ -31,8 +32,9 @@ class Application
      * @var array
      */
     private array $bootstrappers = [
+        SetExceptionHandler::class,
         LoadConfiguration::class,
-        SetExceptionHandler::class
+        CreateDatabaseConnection::class
     ];
 
     /**

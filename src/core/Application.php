@@ -77,6 +77,8 @@ class Application
 
         $this->container = Container::getInstance();
 
+        $this->container->addInstance(Application::class, $this);
+
         $this->bootstrap();
     }
 

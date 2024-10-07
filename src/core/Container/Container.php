@@ -38,7 +38,7 @@ class Container
      * @return mixed|object|null
      * @throws ReflectionException
      */
-    public function make(string $className)
+    public function make(string $className): mixed
     {
         if ($this->hasInstance($className)) {
             return $this->instances[$className];

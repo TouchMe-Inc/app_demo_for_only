@@ -9,9 +9,9 @@ use ReflectionException;
 class Container
 {
     /**
-     * @var self
+     * @var self|null
      */
-    private static $instance;
+    private static Container|null $instance = null;
 
     /**
      * @var array
@@ -23,7 +23,7 @@ class Container
      *
      * @return Container
      */
-    public static function getInstance(): Container
+    public static function getInstance(): self
     {
         if (is_null(self::$instance)) {
             self::$instance = new self;
@@ -32,7 +32,10 @@ class Container
         return self::$instance;
     }
 
+
     /**
+     * @param string $className
+     * @return mixed|object|null
      * @throws ReflectionException
      */
     public function make(string $className)
@@ -48,6 +51,10 @@ class Container
         return $object;
     }
 
+    /**
+     * @param string $className
+     * @return bool
+     */
     public function hasInstance(string $className): bool
     {
         return isset($this->instances[$className]);
@@ -108,7 +115,6 @@ class Container
      */
     private function prepareBuiltin(\ReflectionParameter $parameter)
     {
-        var_dump("resolveBuiltin");
         if ($parameter->isDefaultValueAvailable()) {
 
             return $parameter->getDefaultValue();

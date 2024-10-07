@@ -1,4 +1,4 @@
-# Test task for Only
+# Demo for Only
 
 ## Specification
 > Написать формы регистрации, авторизации, страницу профиля:

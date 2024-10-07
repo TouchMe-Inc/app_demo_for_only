@@ -2,6 +2,7 @@
 
 namespace Core\Routing;
 
+use Core\Application;
 use Core\Container\Container;
 use Core\Http\Request;
 use Exception;
@@ -15,10 +16,10 @@ class Dispatcher
 
     private Container $container;
 
-    function __construct(Router $router)
+    function __construct(Router $router, Container $container)
     {
         $this->router = $router;
-        $this->container = Container::getInstance();
+        $this->container = $container;
     }
 
     /**
@@ -34,7 +35,7 @@ class Dispatcher
             $variableValues = array_slice($matches, 1);
 
             if (count($variableValues) !== count($route->getVariableNames())) {
-                throw new Exception("Route variables do not match");
+                throw new Exception("Route variables do not match.");
             }
 
             $callbackParameters = array_combine($route->getVariableNames(), $variableValues);

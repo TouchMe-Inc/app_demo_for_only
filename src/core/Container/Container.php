@@ -3,37 +3,17 @@
 namespace Core\Container;
 
 use Core\Container\Exception\BuildClassException;
-use Exception;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
 
 class Container
 {
-    /**
-     * @var self|null
-     */
-    private static self|null $instance = null;
 
     /**
      * @var array
      */
     private array $instances = [];
-
-    /**
-     * Create singleton instance.
-     *
-     * @return Container
-     */
-    public static function getInstance(): self
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new self;
-        }
-
-        return self::$instance;
-    }
-
 
     /**
      * @param string $className
@@ -169,21 +149,5 @@ class Container
 
             throw $e;
         }
-    }
-
-    private function __construct()
-    {
-    }
-
-    private function __clone()
-    {
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function __wakeup()
-    {
-        throw new Exception("Cannot unserialize a singleton.");
     }
 }

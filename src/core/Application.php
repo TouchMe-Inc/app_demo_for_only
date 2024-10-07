@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Core\Bootstrap\BindApplication;
 use Core\Bootstrap\CreateDatabaseConnection;
 use Core\Bootstrap\LoadConfiguration;
 use Core\Bootstrap\HandleException;
@@ -32,6 +33,7 @@ class Application
      * @var array
      */
     private array $bootstrappers = [
+        BindApplication::class,
         HandleException::class,
         LoadConfiguration::class,
         CreateDatabaseConnection::class
@@ -47,6 +49,18 @@ class Application
         }
 
         throw new Exception("Application already initialized.");
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function getInstance(): self
+    {
+        if (is_null(self::$instance)) {
+            throw new Exception("Application needs to be initialized.");
+        }
+
+        return self::$instance;
     }
 
     public function getContainer(): Container
@@ -82,9 +96,7 @@ class Application
     {
         $this->basePath = $basePath;
 
-        $this->container = Container::getInstance();
-
-        $this->container->addInstance(Application::class, $this);
+        $this->container = new Container();
 
         $this->bootstrap();
     }

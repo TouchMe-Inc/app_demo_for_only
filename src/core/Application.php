@@ -2,14 +2,11 @@
 
 namespace Core;
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HomeController;
 use Core\Bootstrap\LoadConfiguration;
 use Core\Bootstrap\SetExceptionHandler;
 use Core\Container\Container;
 use Core\Http\Request;
 use Core\Routing\Dispatcher;
-use Core\Routing\Router;
 use Exception;
 
 class Application
@@ -17,7 +14,7 @@ class Application
     /**
      * @var self|null
      */
-    private static Application|null $instance =  null;
+    private static Application|null $instance = null;
 
     private string $basePath;
 
@@ -25,7 +22,7 @@ class Application
 
     /**
      * Bootstrappers for the application.
-     * 
+     *
      * @var array
      */
     private array $bootstrappers = [

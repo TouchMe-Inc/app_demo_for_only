@@ -4,7 +4,7 @@ namespace Core;
 
 use Core\Bootstrap\CreateDatabaseConnection;
 use Core\Bootstrap\LoadConfiguration;
-use Core\Bootstrap\SetExceptionHandler;
+use Core\Bootstrap\HandleException;
 use Core\Container\Container;
 use Core\Http\Request;
 use Core\Routing\Dispatcher;
@@ -32,7 +32,7 @@ class Application
      * @var array
      */
     private array $bootstrappers = [
-        SetExceptionHandler::class,
+        HandleException::class,
         LoadConfiguration::class,
         CreateDatabaseConnection::class
     ];

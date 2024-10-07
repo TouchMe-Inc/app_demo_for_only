@@ -8,6 +8,7 @@ use Core\Config\Configuration;
 
 class LoadConfiguration implements Bootstrapper
 {
+
     public function bootstrap(Application $app): void
     {
         $configuration = $app->getContainer()->make(Configuration::class);

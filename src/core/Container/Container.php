@@ -2,6 +2,7 @@
 
 namespace Core\Container;
 
+use Core\Container\Exception\BuildClassException;
 use Exception;
 use ReflectionClass;
 use ReflectionException;
@@ -12,7 +13,7 @@ class Container
     /**
      * @var self|null
      */
-    private static Container|null $instance = null;
+    private static self|null $instance = null;
 
     /**
      * @var array
@@ -37,7 +38,7 @@ class Container
     /**
      * @param string $className
      * @return mixed|object|null
-     * @throws ReflectionException
+     * @throws BuildClassException
      */
     public function make(string $className): mixed
     {
@@ -83,35 +84,43 @@ class Container
     }
 
     /**
-     * @throws ReflectionException
-     * @throws Exception
+     * @param string $className
+     * @return mixed|object|null
+     * @throws BuildClassException
      */
-    private function build($className)
+    private function build(string $className): mixed
     {
-        $reflector = new ReflectionClass($className);
+        try {
+            $reflector = new ReflectionClass($className);
+        } catch (ReflectionException $e) {
+            throw new BuildClassException("Class '$className' does not exist.", 0, $e);
+        }
 
         if (!$reflector->isInstantiable()) {
-            throw new Exception("Class {$className} is not instantiable");
+            throw new BuildClassException("Class '{$className}' is not instantiable.");
         }
 
         $constructor = $reflector->getConstructor();
 
         if (is_null($constructor)) {
-            return new $className();
+            return new $className;
         }
 
         $dependencies = $constructor->getParameters();
 
         $arguments = $this->prepareArguments($dependencies);
 
-        return $reflector->newInstanceArgs($arguments);
+        try {
+            return $reflector->newInstanceArgs($arguments);
+        } catch (ReflectionException $e) {
+            throw new BuildClassException($e->getMessage(), 0, $e);
+        }
     }
 
     /**
      * @param array $dependencies
      * @return array
-     * @throws ReflectionException
-     * @throws Exception
+     * @throws BuildClassException
      */
     private function prepareArguments(array $dependencies): array
     {
@@ -125,29 +134,41 @@ class Container
     }
 
     /**
-     * @throws Exception
+     * @param ReflectionParameter $parameter
+     * @return mixed
+     * @throws BuildClassException
      */
-    private function prepareBuiltin(ReflectionParameter $parameter)
+    private function prepareBuiltin(ReflectionParameter $parameter): mixed
     {
         if ($parameter->isDefaultValueAvailable()) {
             return $parameter->getDefaultValue();
         }
 
-        throw new Exception("Parameter '{$parameter->getName()}' in class '{$parameter->getDeclaringClass()->getName()}' unresolvable");
+        if ($parameter->hasType() && $parameter->allowsNull()) {
+            return null;
+        }
+
+        throw new BuildClassException("Parameter '{$parameter->getName()}' in class '{$parameter->getDeclaringClass()->getName()}' unresolvable.");
     }
 
     /**
-     * @throws ReflectionException
+     * @param ReflectionParameter $parameter
+     * @return mixed
+     * @throws BuildClassException
      */
-    private function prepareNotBuiltin(ReflectionParameter $parameter)
+    private function prepareNotBuiltin(ReflectionParameter $parameter): mixed
     {
-        if ($parameter->isOptional()) {
-            return $parameter->getDefaultValue();
+        try {
+            return $this->make($parameter->getType()->getName());
+        } catch (BuildClassException $e) {
+            if ($parameter->isOptional()) try {
+                return $parameter->getDefaultValue();
+            } catch (ReflectionException $e) {
+                throw new BuildClassException($e->getMessage(), 0, $e);
+            }
+
+            throw $e;
         }
-
-        $className = $parameter->getType()->getName();
-
-        return $this->make($className);
     }
 
     private function __construct()
@@ -163,6 +184,6 @@ class Container
      */
     public function __wakeup()
     {
-        throw new \Exception("Cannot unserialize a singleton");
+        throw new Exception("Cannot unserialize a singleton.");
     }
 }

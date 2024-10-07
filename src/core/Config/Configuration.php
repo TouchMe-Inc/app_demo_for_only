@@ -2,9 +2,9 @@
 
 namespace Core\Config;
 
-class Configuration implements Collection
+class Configuration
 {
-    private array $items = [];
+    private array $items;
 
     /**
      * @param array $items
@@ -19,7 +19,7 @@ class Configuration implements Collection
      * @param string $key
      * @return bool
      */
-    public function has($key): bool
+    public function has(string $key): bool
     {
         return isset($this->items[$key]);
     }
@@ -29,17 +29,17 @@ class Configuration implements Collection
      * @param mixed $default
      * @return mixed
      */
-    public function get($key, $default = null): mixed
+    public function get(string $key, $default = null): mixed
     {
         return $this->items[$key] ?? $default;
     }
 
     /**
      * @param array|string $key
-     * @param mixed $value
+     * @param mixed|null $value
      * @return void
      */
-    public function set($key, $value = null): void
+    public function set(array|string $key, mixed $value = null): void
     {
         $keys = is_array($key) ? $key : [$key => $value];
 
@@ -53,7 +53,7 @@ class Configuration implements Collection
      * @param mixed $value
      * @return void
      */
-    public function prepend($key, $value): void
+    public function prepend(string $key, mixed $value): void
     {
         $array = $this->get($key);
 
@@ -67,7 +67,7 @@ class Configuration implements Collection
      * @param mixed $value
      * @return void
      */
-    public function push($key, $value): void
+    public function push(string $key, mixed $value): void
     {
         $array = $this->get($key);
 
@@ -77,10 +77,10 @@ class Configuration implements Collection
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return void
      */
-    public function unset($key): void
+    public function unset(string $key): void
     {
         unset($this->items[$key]);
     }

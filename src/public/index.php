@@ -13,5 +13,5 @@ if ($_SERVER['REQUEST_URI'] != "/" && str_ends_with($_SERVER['REQUEST_URI'], '/'
 require __DIR__ . '/../../vendor/autoload.php';
 
 // Use magic
-$app = new Application();
+$app = Application::create(dirname(__DIR__));
 $app->handleRequest(Request::createFromGlobal());

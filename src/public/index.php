@@ -6,12 +6,6 @@ use Core\Application;
 use Core\Http\Request;
 use Core\Routing\Router;
 
-// Redirect all requests that end with "/"
-if ($_SERVER['REQUEST_URI'] != "/" && str_ends_with($_SERVER['REQUEST_URI'], '/')) {
-    header('Location: ' . substr($_SERVER['REQUEST_URI'], 0, -1), true, 301);
-    exit();
-}
-
 // Register Composer
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -23,5 +17,5 @@ $router = $app->getContainer()->make(Router::class);
 $router->get("/signin", [AuthController::class, "signIn"]);
 $router->get("/", [HomeController::class, "index"]);
 
-// Handle the request
+// Handle request
 $app->handleRequest(Request::createFromGlobal());

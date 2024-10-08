@@ -27,14 +27,12 @@ class Route
      */
     private Closure|array $handler;
 
-
     /**
      * Create route instance.
      *
      * @param string $method
      * @param string $uri
      * @param mixed $handler
-     * @throws Exception
      */
     public function __construct(string $method, string $uri, Closure|array $handler)
     {
@@ -42,7 +40,7 @@ class Route
 
         list($regex, $variableNames) = $this->parseUri($uri);
 
-        $this->regex = "~^{$regex}\$~";
+        $this->regex = $regex;
 
         $this->variableNames = $variableNames;
 
@@ -106,14 +104,13 @@ class Route
     /**
      * @param string $uri
      * @return array
-     * @throws Exception
      */
     private function parseUri(string $uri): array
     {
         $variableNames = [];
 
         if (preg_match_all("~\{\s* ([a-zA-Z0-9_]*) \s*(?:: \s* ([^{]+(?:\{.*?})?))?}\??~x", $uri, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER) === 0) {
-            return [$uri, $variableNames];
+            return ["~^{$uri}\$~", $variableNames];
         }
 
         $regex = [];
@@ -129,13 +126,7 @@ class Route
                 }
             }
 
-            $variable = $set[1][0];
-
-            if (in_array($variable, $variableNames)) {
-                throw new Exception("Variable '{$variable}' already defined.");
-            }
-
-            $variableNames[] = $variable;
+            $variableNames[] = $set[1][0];
 
             $regexPart = (isset($set[2]) ? trim($set[2][0]) : '[^/]+');
 
@@ -154,6 +145,6 @@ class Route
             }
         }
 
-        return [implode('', $regex), $variableNames];
+        return ["~^" . implode('', $regex) . "$^", $variableNames];
     }
 }

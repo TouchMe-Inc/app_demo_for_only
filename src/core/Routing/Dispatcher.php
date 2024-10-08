@@ -2,9 +2,9 @@
 
 namespace Core\Routing;
 
-use Core\Application;
 use Core\Container\Container;
 use Core\Http\Request;
+use Core\Http\Response;
 use Exception;
 
 class Dispatcher
@@ -43,9 +43,15 @@ class Dispatcher
 
         $resolvedHandler = $this->resolveHandler($route->getHandler());
 
-        $response = call_user_func_array($resolvedHandler, $callbackParameters);
+        $callbackResult = call_user_func_array($resolvedHandler, $callbackParameters);
 
-        return $response;
+        if ($callbackResult instanceof Response) {
+            $callbackResult->send();
+        } elseif (gettype($callbackResult) === 'string') {
+            (new Response($callbackResult, 200))->send();
+        }
+
+        throw new Exception("Unexpected error occurred");
     }
 
     /**

@@ -20,7 +20,12 @@ class NativeRender implements Renderer
 
         ob_start();
 
-        require $template;
+        try {
+            require $template;
+        } catch (\Throwable $e) {
+            ob_end_clean();
+            throw $e;
+        }
 
         return ob_get_clean();
     }

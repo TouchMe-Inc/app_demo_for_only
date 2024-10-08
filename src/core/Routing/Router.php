@@ -3,49 +3,36 @@
 namespace Core\Routing;
 
 use Core\Http\Request;
+use Core\Routing\Exception\RouteNotFoundException;
 use Exception;
 
 class Router
 {
     private RouteCollection $routes;
 
-    public function __construct()
+    public function __construct(RouteCollection $routes)
     {
-        $this->routes = new RouteCollection();
+        $this->routes = $routes;
     }
 
     /**
      * @param string $uri
      * @param mixed $handler
-     * @return void
-     * @throws Exception
+     * @return self
      */
-    public function get(string $uri, mixed $handler): void
+    public function get(string $uri, mixed $handler): self
     {
-        $this->addRoute(Request::METHOD_GET, $uri, $handler);
+        return $this->addRoute(Request::METHOD_GET, $uri, $handler);
     }
 
     /**
      * @param string $uri
      * @param mixed $handler
-     * @return void
-     * @throws Exception
+     * @return self
      */
-    public function post(string $uri, mixed $handler): void
+    public function post(string $uri, mixed $handler): self
     {
-        $this->addRoute(Request::METHOD_POST, $uri, $handler);
-    }
-
-
-    /**
-     * @param string $uri
-     * @param mixed $handler
-     * @return void
-     * @throws Exception
-     */
-    public function put(string $uri, mixed $handler): void
-    {
-        $this->addRoute(Request::METHOD_PUT, $uri, $handler);
+        return $this->addRoute(Request::METHOD_POST, $uri, $handler);
     }
 
 
@@ -53,63 +40,72 @@ class Router
      * @param string $uri
      * @param mixed $handler
      * @return void
-     * @throws Exception
      */
-    public function patch(string $uri, mixed $handler): void
+    public function put(string $uri, mixed $handler): self
     {
-        $this->addRoute(Request::METHOD_PATCH, $uri, $handler);
+        return $this->addRoute(Request::METHOD_PUT, $uri, $handler);
+    }
+
+
+    /**
+     * @param string $uri
+     * @param mixed $handler
+     * @return void
+     */
+    public function patch(string $uri, mixed $handler): self
+    {
+        return $this->addRoute(Request::METHOD_PATCH, $uri, $handler);
     }
 
     /**
      * @param string $uri
      * @param mixed $handler
      * @return void
-     * @throws Exception
      */
-    public function delete(string $uri, mixed $handler): void
+    public function delete(string $uri, mixed $handler): self
     {
-        $this->addRoute(Request::METHOD_DELETE, $uri, $handler);
+        return $this->addRoute(Request::METHOD_DELETE, $uri, $handler);
     }
 
     /**
      * @param string $uri
      * @param mixed $handler
      * @return void
-     * @throws Exception
      */
-    public function head(string $uri, mixed $handler): void
+    public function head(string $uri, mixed $handler): self
     {
-        $this->addRoute(Request::METHOD_HEAD, $uri, $handler);
+        return $this->addRoute(Request::METHOD_HEAD, $uri, $handler);
     }
 
     /**
      * @param string $uri
      * @param mixed $handler
      * @return void
-     * @throws Exception
      */
-    public function options(string $uri, mixed $handler): void
+    public function options(string $uri, mixed $handler): self
     {
-        $this->addRoute(Request::METHOD_OPTIONS, $uri, $handler);
+        return $this->addRoute(Request::METHOD_OPTIONS, $uri, $handler);
     }
+
 
     /**
      * @param string $method
      * @param string $uri
      * @param mixed $handler
-     * @return void
-     * @throws Exception
+     * @return self
      */
-    private function addRoute(string $method, string $uri, mixed $handler): void
+    private function addRoute(string $method, string $uri, mixed $handler): self
     {
         $route = new Route($method, $uri, $handler);
         $this->routes->add($route);
+
+        return $this;
     }
 
     /**
      * @param Request $request
      * @return Route
-     * @throws Exception
+     * @throws RouteNotFoundException
      */
     public function match(Request $request): Route
     {
@@ -120,6 +116,6 @@ class Router
             }
         }
 
-        throw new Exception("No route matched");
+        throw new RouteNotFoundException("Route not found");
     }
 }

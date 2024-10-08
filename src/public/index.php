@@ -14,12 +14,14 @@ require __DIR__ . '/../../vendor/autoload.php';
 $app = Application::create(dirname(__DIR__));
 
 //Add routes
+/** @var Router $router */
 $router = $app->container()->make(Router::class);
-$router->get("/users", [UserController::class, "index"]);
-$router->get("/signin", [AuthController::class, "signIn"]);
-$router->get("/signup", [AuthController::class, "signUp"]);
-$router->get("/signout", [AuthController::class, "signOut"]);
-$router->get("/", [HomeController::class, "index"]);
+$router
+    ->get("/users", [UserController::class, "index"])
+    ->get("/signin", [AuthController::class, "signIn"])
+    ->get("/signup", [AuthController::class, "signUp"])
+    ->get("/signout", [AuthController::class, "signOut"])
+    ->get("/", [HomeController::class, "index"]);
 
 // Handle request
 $app->handleRequest(Request::createFromGlobal());

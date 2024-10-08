@@ -15,6 +15,7 @@ $app = Application::create(dirname(__DIR__));
 //Add routes
 $router = $app->getContainer()->make(Router::class);
 $router->get("/signin", [AuthController::class, "signIn"]);
+$router->get("/signup", [AuthController::class, "signUp"]);
 $router->get("/", [HomeController::class, "index"]);
 
 // Handle request

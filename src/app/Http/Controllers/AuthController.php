@@ -12,7 +12,13 @@ class AuthController
         $this->authService = $authService;
     }
 
-    public function signIn() {
+    public function signIn(): string
+    {
         return $this->authService->signIn();
+    }
+
+    public function signUp(): string
+    {
+        return $this->authService->signUp();
     }
 }

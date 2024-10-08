@@ -8,4 +8,9 @@ class AuthService
     {
         return "foo";
     }
+
+    public function signUp()
+    {
+        return "bar";
+    }
 }

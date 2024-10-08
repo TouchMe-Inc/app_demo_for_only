@@ -6,11 +6,16 @@ class AuthService
 {
     public function signIn()
     {
-        return "foo";
+        return "signIn";
     }
 
     public function signUp()
     {
-        return "bar";
+        return "signUp";
+    }
+
+    public function signOut()
+    {
+        return "signOut";
     }
 }

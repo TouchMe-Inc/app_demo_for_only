@@ -21,4 +21,9 @@ class AuthController
     {
         return $this->authService->signUp();
     }
+
+    public function signOut(): string
+    {
+        return $this->authService->signOut();
+    }
 }

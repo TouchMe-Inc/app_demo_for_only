@@ -18,6 +18,7 @@ $router = $app->container()->make(Router::class);
 $router->get("/users", [UserController::class, "index"]);
 $router->get("/signin", [AuthController::class, "signIn"]);
 $router->get("/signup", [AuthController::class, "signUp"]);
+$router->get("/signout", [AuthController::class, "signOut"]);
 $router->get("/", [HomeController::class, "index"]);
 
 // Handle request

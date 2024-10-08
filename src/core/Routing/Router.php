@@ -2,9 +2,8 @@
 
 namespace Core\Routing;
 
-use Core\Http\Request;
+use Core\Request\Request;
 use Core\Routing\Exception\RouteNotFoundException;
-use Exception;
 
 class Router
 {

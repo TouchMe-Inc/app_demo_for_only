@@ -3,8 +3,8 @@
 namespace Core\Routing;
 
 use Core\Container\Container;
-use Core\Http\Request;
-use Core\Http\Response;
+use Core\Request\Request;
+use Core\Response\Response;
 use Exception;
 
 class Dispatcher

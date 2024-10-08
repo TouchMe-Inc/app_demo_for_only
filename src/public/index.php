@@ -1,10 +1,10 @@
 <?php /** @noinspection PhpUnhandledExceptionInspection */
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
+use App\Controllers\AuthController;
+use App\Controllers\HomeController;
+use App\Controllers\UserController;
 use Core\Application;
-use Core\Http\Request;
+use Core\Request\Request;
 use Core\Routing\Router;
 
 // Register Composer

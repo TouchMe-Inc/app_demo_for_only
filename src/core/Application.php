@@ -4,10 +4,10 @@ namespace Core;
 
 use Core\Bootstrap\BindApplication;
 use Core\Bootstrap\CreateDatabaseConnection;
-use Core\Bootstrap\LoadConfiguration;
 use Core\Bootstrap\HandleException;
+use Core\Bootstrap\LoadConfiguration;
 use Core\Container\Container;
-use Core\Http\Request;
+use Core\Request\Request;
 use Core\Routing\Dispatcher;
 use Exception;
 

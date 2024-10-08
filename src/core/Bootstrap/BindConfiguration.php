@@ -4,12 +4,13 @@ namespace Core\Bootstrap;
 
 use Core\Application;
 use Core\Bootstrap\Interface\Bootstrapper;
+use Core\Config\Configuration;
 
-class CreateDatabaseConnection implements Bootstrapper
+class BindConfiguration implements Bootstrapper
 {
 
     public function bootstrap(Application $app): void
     {
-        // TODO: Implement bootstrap() method.
+        $app->container()->addInstance(Configuration::class, $app->configuration());
     }
 }

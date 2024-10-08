@@ -3,9 +3,10 @@
 namespace Core;
 
 use Core\Bootstrap\BindApplication;
-use Core\Bootstrap\CreateDatabaseConnection;
+use Core\Bootstrap\BindConfiguration;
+use Core\Bootstrap\BindContainer;
 use Core\Bootstrap\HandleException;
-use Core\Bootstrap\LoadConfiguration;
+use Core\Config\Configuration;
 use Core\Container\Container;
 use Core\Request\Request;
 use Core\Routing\Dispatcher;
@@ -27,6 +28,8 @@ class Application
 
     private Container $container;
 
+    private Configuration $configuration;
+
     /**
      * Bootstrappers for the application.
      *
@@ -34,9 +37,9 @@ class Application
      */
     private array $bootstrappers = [
         BindApplication::class,
+        BindContainer::class,
+        BindConfiguration::class,
         HandleException::class,
-        LoadConfiguration::class,
-        CreateDatabaseConnection::class
     ];
 
     /**
@@ -73,6 +76,16 @@ class Application
         return $this->container;
     }
 
+    /**
+     * Get the configuration associated with the application.
+     *
+     * @return Configuration
+     */
+    public function configuration(): Configuration
+    {
+        return $this->configuration;
+    }
+
     public function handleRequest(Request $request): void
     {
         $dispatcher = $this->container()->make(Dispatcher::class);
@@ -102,6 +115,8 @@ class Application
         $this->basePath = $basePath;
 
         $this->container = new Container();
+
+        $this->configuration = new Configuration();
 
         $this->bootstrap();
     }

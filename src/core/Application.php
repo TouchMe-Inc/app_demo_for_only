@@ -6,6 +6,7 @@ use Core\Bootstrap\BindApplication;
 use Core\Bootstrap\BindConfiguration;
 use Core\Bootstrap\BindContainer;
 use Core\Bootstrap\HandleException;
+use Core\Bootstrap\Interface\Bootstrapper;
 use Core\Config\Configuration;
 use Core\Container\Container;
 use Core\Request\Request;
@@ -98,15 +99,14 @@ class Application
         return $this->basePath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 
-    public function getConfigPath($path = ''): string
+    /**
+     * @param array $bootstrappers
+     * @return void
+     */
+    public function bootstrap(array $bootstrappers): void
     {
-        return $this->getBasePath('config' . ($path ? DIRECTORY_SEPARATOR . $path : $path));
-    }
-
-    private function bootstrap(): void
-    {
-        foreach ($this->bootstrappers as $bootstrapper) {
-            (new $bootstrapper())->bootstrap($this);
+        foreach ($bootstrappers as $bootstrapper) {
+            $this->container()->make($bootstrapper)->bootstrap($this);
         }
     }
 
@@ -118,7 +118,7 @@ class Application
 
         $this->configuration = new Configuration();
 
-        $this->bootstrap();
+        $this->bootstrap($this->bootstrappers);
     }
 
     private function __clone()

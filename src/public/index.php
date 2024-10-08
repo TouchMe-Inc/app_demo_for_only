@@ -14,7 +14,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 $app = Application::create(dirname(__DIR__));
 
 //Add routes
-$router = $app->getContainer()->make(Router::class);
+$router = $app->container()->make(Router::class);
 $router->get("/users", [UserController::class, "index"]);
 $router->get("/signin", [AuthController::class, "signIn"]);
 $router->get("/signup", [AuthController::class, "signUp"]);

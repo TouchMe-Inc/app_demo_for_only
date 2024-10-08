@@ -43,6 +43,6 @@ class HandleException implements Bootstrapper
 
     private function handler(): ExceptionHandler
     {
-        return $this->app->getContainer()->make(ExceptionHandler::class);
+        return $this->app->container()->make(ExceptionHandler::class);
     }
 }

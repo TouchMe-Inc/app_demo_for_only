@@ -63,14 +63,19 @@ class Application
         return self::$instance;
     }
 
-    public function getContainer(): Container
+    /**
+     * Get the container associated with the application.
+     *
+     * @return Container
+     */
+    public function container(): Container
     {
         return $this->container;
     }
 
     public function handleRequest(Request $request): void
     {
-        $dispatcher = $this->getContainer()->make(Dispatcher::class);
+        $dispatcher = $this->container()->make(Dispatcher::class);
 
         print_r($dispatcher->dispatch($request));
     }

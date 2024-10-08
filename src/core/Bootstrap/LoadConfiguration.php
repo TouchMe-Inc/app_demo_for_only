@@ -11,7 +11,7 @@ class LoadConfiguration implements Bootstrapper
 
     public function bootstrap(Application $app): void
     {
-        $configuration = $app->getContainer()->make(Configuration::class);
+        $configuration = $app->container()->make(Configuration::class);
 
         foreach (glob($app->getConfigPath("*.php")) as $filePath) {
             $configuration->set(basename($filePath, ".php"), require $filePath);

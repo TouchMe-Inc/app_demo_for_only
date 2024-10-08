@@ -10,6 +10,6 @@ class BindApplication implements Bootstrapper
 
     public function bootstrap(Application $app): void
     {
-        $app->getContainer()->addInstance(Application::class, $app);
+        $app->container()->addInstance(Application::class, $app);
     }
 }

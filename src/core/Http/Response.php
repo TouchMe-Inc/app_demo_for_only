@@ -14,4 +14,15 @@ class Response
         $this->content = $content;
         $this->status = $status;
     }
+
+    public function send(): void
+    {
+        foreach ($this->headers as $header) {
+            header($header);
+        }
+
+        http_response_code($this->status);
+
+        echo $this->content;
+    }
 }

@@ -12,9 +12,7 @@ class NativeRender implements Renderer
      */
     public function render(string $template, array $data = []): string
     {
-        if (!file_exists($template)) {
-            throw new Exception("Template '$template' does not exist.");
-        }
+        $level = ob_get_level();
 
         extract($data, EXTR_SKIP);
 
@@ -23,7 +21,9 @@ class NativeRender implements Renderer
         try {
             require $template;
         } catch (\Throwable $e) {
-            ob_end_clean();
+            while (ob_get_level() > $level) {
+                ob_end_clean();
+            }
             throw $e;
         }
 

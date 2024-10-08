@@ -1,8 +1,5 @@
 <?php
 /** @var string $customString */
-
-use Cassandra\Date;
-
 ?>
 <?php require __DIR__ . '/../components/header.php' ?>
 <main class="flex-grow my-6">

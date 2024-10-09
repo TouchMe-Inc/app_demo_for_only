@@ -4,8 +4,8 @@
 use App\Views\View;
 
 ?>
-<?= View::render("components/Header") ?>
-<?= View::render("components/TopGradient") ?>
+<?= View::component("Header") ?>
+<?= View::component("TopGradient") ?>
     <main class="flex-grow my-6">
         <section>
             <div class="px-6 max-w-6xl mx-auto">
@@ -13,4 +13,4 @@ use App\Views\View;
             </div>
         </section>
     </main>
-<?= View::render("components/Footer") ?>
+<?= View::component("Footer") ?>

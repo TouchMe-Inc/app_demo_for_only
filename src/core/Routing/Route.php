@@ -153,6 +153,6 @@ class Route
             }
         }
 
-        return ["~^" . implode('', $regex) . "$^", $variableNames];
+        return ["~^" . implode('', $regex) . "$~", $variableNames];
     }
 }

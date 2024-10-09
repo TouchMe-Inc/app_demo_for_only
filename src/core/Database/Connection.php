@@ -3,6 +3,7 @@
 namespace Core\Database;
 
 use PDO;
+use PDOStatement;
 
 abstract class Connection implements Interface\Connection
 {
@@ -25,28 +26,14 @@ abstract class Connection implements Interface\Connection
 
     public function insert(string $query, array $bindings = []): bool
     {
-        $statement = $this->pdo->prepare($query);
-
-        foreach ($bindings as $binding) {
-            $statement->bindValue($binding, $binding, match (true) {
-                is_int($binding) => PDO::PARAM_INT,
-                default => PDO::PARAM_STR,
-            });
-        }
+        $statement = $this->prepareStatement($query, $bindings);
 
         return $statement->execute();
     }
 
     public function select(string $query, array $bindings = []): array
     {
-        $statement = $this->pdo->prepare($query);
-
-        foreach ($bindings as $binding) {
-            $statement->bindValue($binding, $binding, match (true) {
-                is_int($binding) => PDO::PARAM_INT,
-                default => PDO::PARAM_STR,
-            });
-        }
+        $statement = $this->prepareStatement($query, $bindings);
 
         $statement->execute();
 
@@ -55,14 +42,7 @@ abstract class Connection implements Interface\Connection
 
     public function update(string $query, array $bindings = []): int
     {
-        $statement = $this->pdo->prepare($query);
-
-        foreach ($bindings as $binding) {
-            $statement->bindValue($binding, $binding, match (true) {
-                is_int($binding) => PDO::PARAM_INT,
-                default => PDO::PARAM_STR,
-            });
-        }
+        $statement = $this->prepareStatement($query, $bindings);
 
         $statement->execute();
 
@@ -70,6 +50,15 @@ abstract class Connection implements Interface\Connection
     }
 
     public function delete(string $query, array $bindings = []): int
+    {
+        $statement = $this->prepareStatement($query, $bindings);
+
+        $statement->execute();
+
+        return $statement->rowCount();
+    }
+
+    private function prepareStatement(string $query, array $bindings = []): PDOStatement
     {
         $statement = $this->pdo->prepare($query);
 
@@ -80,8 +69,6 @@ abstract class Connection implements Interface\Connection
             });
         }
 
-        $statement->execute();
-
-        return $statement->rowCount();
+        return $statement;
     }
 }

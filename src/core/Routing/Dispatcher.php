@@ -5,6 +5,7 @@ namespace Core\Routing;
 use Core\Container\Container;
 use Core\Request\Request;
 use Core\Response\Response;
+use Core\Routing\Exception\RouteNotFoundException;
 use Exception;
 
 class Dispatcher
@@ -22,10 +23,14 @@ class Dispatcher
         $this->container = $container;
     }
 
+
     /**
+     * @param Request $request
+     * @return void
+     * @throws RouteNotFoundException
      * @throws Exception
      */
-    public function dispatch(Request $request)
+    public function dispatch(Request $request): void
     {
         $route = $this->router->match($request);
 
@@ -34,6 +39,7 @@ class Dispatcher
         if ($route->getVariableNames() && preg_match($route->getRegex(), $request->getUri(), $matches) && $matches) {
             $variableValues = array_slice($matches, 1);
 
+            // TODO: check this case
             if (count($variableValues) !== count($route->getVariableNames())) {
                 throw new Exception("Route variables do not match.");
             }
@@ -49,9 +55,9 @@ class Dispatcher
             $callbackResult->send();
         } elseif (gettype($callbackResult) === 'string') {
             (new Response($callbackResult, 200))->send();
+        } else {
+            throw new Exception("Unexpected error occurred");
         }
-
-        throw new Exception("Unexpected error occurred");
     }
 
     /**

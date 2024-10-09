@@ -10,8 +10,7 @@ class View
     public static function render(string $view, array $data = []): string
     {
         return (new NativeRender())->render(
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
-            . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $view . ".php",
+            app()->getBasePath() . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $view . ".php",
             $data
         );
     }

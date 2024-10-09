@@ -2,12 +2,17 @@
 
 namespace Core\Database;
 
+use Exception;
+
 class ConnectionFactory
 {
-    private const DRIVER_MYSQL = 'mysql';
-    private const DRIVER_PGSQL = 'pgsql';
-    private const DRIVER_SQLITE = 'sqlite';
+    public const DRIVER_MYSQL = 'mysql';
+    public const DRIVER_PGSQL = 'pgsql';
+    public const DRIVER_SQLITE = 'sqlite';
 
+    /**
+     * @throws Exception
+     */
     public function createConnection($driver, $pdo): Connection
     {
         switch ($driver) {
@@ -19,6 +24,6 @@ class ConnectionFactory
                 return new SqliteConnection($pdo);
         }
 
-        throw new \Exception("Driver '{$driver}' not supported");
+        throw new Exception("Driver '{$driver}' not supported");
     }
 }

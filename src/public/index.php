@@ -6,7 +6,6 @@ use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\UserController;
 use Core\Application;
-use Core\Request\Request;
 use Core\Routing\Router;
 
 // Register Composer
@@ -25,11 +24,11 @@ $router
     ->get("/signout", [AuthController::class, "signOut"])
     ->get("/", [HomeController::class, "index"]);
 
-// Application bootstrap
+// Bootstrap the Application
 $app->bootstrap([
     LoadConfiguration::class,
     CreateDatabaseConnection::class
 ]);
 
-// Handle request
-$app->handleRequest(Request::createFromGlobal());
+// Run the Application
+$app->run();

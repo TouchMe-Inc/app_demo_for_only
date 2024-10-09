@@ -6,7 +6,6 @@ use Core\Bootstrap\BindApplication;
 use Core\Bootstrap\BindConfiguration;
 use Core\Bootstrap\BindContainer;
 use Core\Bootstrap\HandleException;
-use Core\Bootstrap\Interface\Bootstrapper;
 use Core\Config\Configuration;
 use Core\Container\Container;
 use Core\Request\Request;
@@ -30,6 +29,8 @@ class Application
     private Container $container;
 
     private Configuration $configuration;
+
+    private bool $runs = false;
 
     /**
      * Bootstrappers for the application.
@@ -87,11 +88,17 @@ class Application
         return $this->configuration;
     }
 
-    public function handleRequest(Request $request): void
+    public function run(): void
     {
+        if ($this->runs) {
+            return;
+        }
+
         $dispatcher = $this->container()->make(Dispatcher::class);
 
-        print_r($dispatcher->dispatch($request));
+        $dispatcher->dispatch(Request::createFromGlobal());
+
+        $this->runs = true;
     }
 
     public function getBasePath($path = ''): string
@@ -106,7 +113,7 @@ class Application
     public function bootstrap(array $bootstrappers): void
     {
         foreach ($bootstrappers as $bootstrapper) {
-            $this->container()->make($bootstrapper)->bootstrap($this);
+            (new $bootstrapper)->bootstrap($this);
         }
     }
 

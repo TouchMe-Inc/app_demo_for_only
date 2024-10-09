@@ -32,7 +32,7 @@ class Dispatcher
      */
     public function dispatch(Request $request): void
     {
-        $route = $this->router->match($request);
+        $route = $this->router->matchByRequest($request);
 
         $callbackParameters = [];
 

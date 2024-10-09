@@ -7,11 +7,11 @@ use Core\Routing\Exception\RouteNotFoundException;
 
 class Router
 {
-    private RouteCollection $routes;
+    private RouteCollection $collection;
 
-    public function __construct(RouteCollection $routes)
+    public function __construct(RouteCollection $collection)
     {
-        $this->routes = $routes;
+        $this->collection = $collection;
     }
 
     /**
@@ -96,9 +96,29 @@ class Router
     private function addRoute(string $method, string $uri, mixed $handler): self
     {
         $route = new Route($method, $uri, $handler);
-        $this->routes->add($route);
+        $this->collection->add($route);
 
         return $this;
+    }
+
+    /**
+     * @param string $method
+     * @param mixed $uri
+     * @return Route
+     * @throws RouteNotFoundException
+     */
+    public function match(string $method, mixed $uri): Route
+    {
+        $routesByMethod = $this->collection->getRoutesByMethod($method);
+
+        /** @var Route $route */
+        foreach ($routesByMethod as $route) {
+            if ($route->compareUri($uri)) {
+                return $route;
+            }
+        }
+
+        throw new RouteNotFoundException("Route not found");
     }
 
     /**
@@ -106,15 +126,8 @@ class Router
      * @return Route
      * @throws RouteNotFoundException
      */
-    public function match(Request $request): Route
+    public function matchByRequest(Request $request): Route
     {
-        /** @var Route $route */
-        foreach ($this->routes->getRoutesByMethod($request->getMethod()) as $route) {
-            if ($route->compareUri($request->getUri())) {
-                return $route;
-            }
-        }
-
-        throw new RouteNotFoundException("Route not found");
+        return $this->match($request->getMethod(), $request->getUri());
     }
 }

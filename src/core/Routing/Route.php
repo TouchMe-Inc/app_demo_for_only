@@ -36,7 +36,7 @@ class Route
      */
     public function __construct(string $method, string $uri, Closure|array $handler)
     {
-        $this->method = $method;
+        $this->setMethod($method);
 
         list($regex, $variableNames) = $this->parseUri($uri);
 
@@ -53,6 +53,14 @@ class Route
     public function getMethod(): string
     {
         return $this->method;
+    }
+
+    /**
+     * @param string $method
+     */
+    public function setMethod(string $method): void
+    {
+        $this->method = strtoupper($method);
     }
 
     /**

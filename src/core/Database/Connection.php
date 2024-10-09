@@ -25,25 +25,63 @@ abstract class Connection implements Interface\Connection
 
     public function insert(string $query, array $bindings = []): bool
     {
-        // TODO: Implement insert() method.
-        return false;
+        $statement = $this->pdo->prepare($query);
+
+        foreach ($bindings as $binding) {
+            $statement->bindValue($binding, $binding, match (true) {
+                is_int($binding) => PDO::PARAM_INT,
+                default => PDO::PARAM_STR,
+            });
+        }
+
+        return $statement->execute();
     }
 
-     public function select(string $query, array $bindings = []): array
-     {
-         // TODO: Implement select() method.
-         return [];
-     }
+    public function select(string $query, array $bindings = []): array
+    {
+        $statement = $this->pdo->prepare($query);
 
-     public function update(string $query, array $bindings = []): int
-     {
-         // TODO: Implement update() method.
-         return 0;
-     }
+        foreach ($bindings as $binding) {
+            $statement->bindValue($binding, $binding, match (true) {
+                is_int($binding) => PDO::PARAM_INT,
+                default => PDO::PARAM_STR,
+            });
+        }
 
-     public function delete(string $query, array $bindings = []): int
-     {
-         // TODO: Implement delete() method.
-         return 0;
-     }
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
+    public function update(string $query, array $bindings = []): int
+    {
+        $statement = $this->pdo->prepare($query);
+
+        foreach ($bindings as $binding) {
+            $statement->bindValue($binding, $binding, match (true) {
+                is_int($binding) => PDO::PARAM_INT,
+                default => PDO::PARAM_STR,
+            });
+        }
+
+        $statement->execute();
+
+        return $statement->rowCount();
+    }
+
+    public function delete(string $query, array $bindings = []): int
+    {
+        $statement = $this->pdo->prepare($query);
+
+        foreach ($bindings as $binding) {
+            $statement->bindValue($binding, $binding, match (true) {
+                is_int($binding) => PDO::PARAM_INT,
+                default => PDO::PARAM_STR,
+            });
+        }
+
+        $statement->execute();
+
+        return $statement->rowCount();
+    }
 }

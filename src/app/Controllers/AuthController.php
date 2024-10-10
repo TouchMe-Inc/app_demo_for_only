@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Services\AuthService;
+use App\Views\View;
 
 class AuthController
 {
@@ -14,7 +15,9 @@ class AuthController
 
     public function signIn(): string
     {
-        return $this->authService->signIn();
+        return View::layout("base", [
+            "slot" => View::page("auth/signin",)
+        ]);
     }
 
     public function signUp(): string

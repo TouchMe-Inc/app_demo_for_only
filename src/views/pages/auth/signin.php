@@ -16,12 +16,14 @@ use App\Views\View;
                             <label for="name_or_email" class="block mb-1 text-sm ">Name or Email <span
                                         class="text-red-500">*</span></label>
                             <input id="name_or_email" type="text" required autofocus
+                                   name="nameOrEmail"
                                    class="w-full text-sm px-3 py-2 bg-gray-800 rounded-lg border border-transparent focus:border-purple-600 focus:outline-none"/>
                         </div>
                         <div class="mb-8">
                             <label for="password" class="block mb-1 text-sm">Password <span
                                         class="text-red-500">*</span></label>
                             <input id="password" type="password" required
+                                   name="password"
                                    class="w-full text-sm px-3 py-2 bg-gray-800 rounded-lg border border-transparent focus:border-purple-600 focus:outline-none"/>
                         </div>
                         <div>

@@ -18,6 +18,7 @@ $app = Application::create(dirname(__DIR__));
 /** @var Router $router */
 $router = $app->container()->make(Router::class);
 $router
+    ->get("/users/{id}", [UserController::class, "view"])
     ->get("/users", [UserController::class, "index"])
     ->get("/signin", [AuthController::class, "signIn"])
     ->get("/signup", [AuthController::class, "signUp"])

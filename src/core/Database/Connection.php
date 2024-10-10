@@ -62,9 +62,9 @@ abstract class Connection implements Interface\Connection
     {
         $statement = $this->pdo->prepare($query);
 
-        foreach ($bindings as $binding) {
-            $statement->bindValue($binding, $binding, match (true) {
-                is_int($binding) => PDO::PARAM_INT,
+        foreach ($bindings as $key => $value) {
+            $statement->bindValue($key, $value, match (true) {
+                is_int($value) => PDO::PARAM_INT,
                 default => PDO::PARAM_STR,
             });
         }

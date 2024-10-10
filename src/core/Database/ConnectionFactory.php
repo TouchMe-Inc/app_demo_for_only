@@ -2,7 +2,10 @@
 
 namespace Core\Database;
 
-use Exception;
+use Core\Database\Exception\DriverNotSupportedException;
+use Core\Database\Interface\Connector;
+use PDO;
+
 
 class ConnectionFactory
 {
@@ -11,19 +14,35 @@ class ConnectionFactory
     public const DRIVER_SQLITE = 'sqlite';
 
     /**
-     * @throws Exception
+     * @param $driver
+     * @param array $options
+     * @return Connection
+     * @throws DriverNotSupportedException
      */
-    public function createConnection($driver, $pdo): Connection
+    public function createConnection($driver, array $options): Connection
     {
-        switch ($driver) {
-            case self::DRIVER_MYSQL:
-                return new MySqlConnection($pdo);
-            case self::DRIVER_PGSQL:
-                return new PgSqlConnection($pdo);
-            case self::DRIVER_SQLITE:
-                return new SqliteConnection($pdo);
+        if (!$this->isSupportedDriver($driver)) {
+            throw new DriverNotSupportedException();
         }
 
-        throw new Exception("Driver '{$driver}' not supported");
+        /** @var Connector $connector */
+        $connector = match ($driver) {
+            self::DRIVER_MYSQL => new MySqlConnector(),
+            self::DRIVER_PGSQL => new PgSqlConnector(),
+            self::DRIVER_SQLITE => new SqliteConnector()
+        };
+
+        $pdo = $connector->connect($options);
+
+        return match ($driver) {
+            self::DRIVER_MYSQL => new MySqlConnection($pdo),
+            self::DRIVER_PGSQL => new PgSqlConnection($pdo),
+            self::DRIVER_SQLITE => new SqliteConnection($pdo)
+        };
+    }
+
+    private function isSupportedDriver(string $driver): bool
+    {
+        return in_array($driver, [self::DRIVER_MYSQL, self::DRIVER_PGSQL, self::DRIVER_SQLITE]);
     }
 }

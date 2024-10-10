@@ -4,7 +4,6 @@ namespace Core\Database;
 
 use Core\Database\Exception\DriverNotSupportedException;
 use Core\Database\Interface\Connector;
-use PDO;
 
 
 class ConnectionFactory

@@ -22,7 +22,9 @@ class AuthController
 
     public function signUp(): string
     {
-        return $this->authService->signUp();
+        return View::layout("base", [
+            "slot" => View::page("auth/signup",)
+        ]);
     }
 
     public function signOut(): string

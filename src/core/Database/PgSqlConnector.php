@@ -10,7 +10,7 @@ class PgSqlConnector implements Connector
 
     public function connect(array $params): PDO
     {
-        $dsn = $params['dsn'] ?? "pgsql:host={$params['host']};port={$params['port']}";
+        $dsn = $params['dsn'] ?? "pgsql:host={$params['host']};port={$params['port']};dbname={$params['database']}";
         $user = $params['user'];
         $password = $params['pass'];
         $options = $params['options'];

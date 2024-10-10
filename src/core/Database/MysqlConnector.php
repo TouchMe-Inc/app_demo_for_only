@@ -10,7 +10,7 @@ class MysqlConnector implements Connector
 
     public function connect(array $params): PDO
     {
-        $dsn = $params['dsn'] ?? "mysql:host={$params['host']};dbname={$params['dbname']}";
+        $dsn = $params['dsn'] ?? "mysql:host={$params['host']};port={$params['port']};dbname={$params['database']}";
         $user = $params['user'];
         $password = $params['pass'];
         $options = $params['options'];

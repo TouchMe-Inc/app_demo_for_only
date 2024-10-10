@@ -17,10 +17,14 @@ class UserController
     public function index(): string
     {
         return View::layout("base", [
-            "slot" => View::page("users")
             "slot" => View::page("users/index", ['users' => $this->userService->all()])
         ]);
     }
+
+    public function view(int $id): string
+    {
+        return View::layout("base", [
+            "slot" => View::page("users/view", ['user' => $this->userService->getById($id)])
         ]);
     }
 }

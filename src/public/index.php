@@ -21,6 +21,8 @@ $router
     ->get("/users/{id}", [UserController::class, "view"])
     ->get("/users", [UserController::class, "index"])
     ->get("/signin", [AuthController::class, "signIn"])
+    ->post("/signin", [AuthController::class, "signIn"])
+    ->post("/signup", [AuthController::class, "signUp"])
     ->get("/signup", [AuthController::class, "signUp"])
     ->get("/signout", [AuthController::class, "signOut"])
     ->get("/", [HomeController::class, "index"]);

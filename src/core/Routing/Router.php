@@ -9,9 +9,9 @@ class Router
 {
     private RouteCollection $collection;
 
-    public function __construct(RouteCollection $collection)
+    public function __construct()
     {
-        $this->collection = $collection;
+        $this->collection = new RouteCollection();
     }
 
     /**

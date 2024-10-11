@@ -10,6 +10,7 @@ use Core\Configuration\Configuration;
 use Core\Container\Container;
 use Core\Request\Request;
 use Core\Routing\Dispatcher;
+use Core\Routing\Router;
 use Exception;
 
 class Application
@@ -29,6 +30,8 @@ class Application
     private Container $container;
 
     private Configuration $configuration;
+
+    private Router $router;
 
     private bool $runs = false;
 
@@ -88,6 +91,16 @@ class Application
         return $this->configuration;
     }
 
+    /**
+     * Get the configuration associated with the application.
+     *
+     * @return Router
+     */
+    public function router(): Router
+    {
+        return $this->router;
+    }
+
     public function run(): void
     {
         if ($this->runs) {
@@ -128,6 +141,8 @@ class Application
         $this->container = new Container();
 
         $this->configuration = new Configuration();
+
+        $this->router = new Router();
 
         $this->bootstrap($this->bootstrappers);
     }

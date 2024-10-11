@@ -14,9 +14,9 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function all()
+    public function getPage($page, $perPage)
     {
-        $users = $this->userRepository->all();
+        $users = $this->userRepository->getPage($page, $perPage);
 
         // code..
 
@@ -25,7 +25,7 @@ class UserService
 
     public function getById(int $id)
     {
-        $user = $this->userRepository->getById($id);
+        $user = $this->userRepository->getPage($id);
 
         // code..
 

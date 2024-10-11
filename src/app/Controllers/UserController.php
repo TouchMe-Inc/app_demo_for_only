@@ -16,8 +16,11 @@ class UserController
 
     public function index(): string
     {
+        $page = 1;
+        $perPage = 10;
+
         return View::layout("base", [
-            "slot" => View::page("users/index", ['users' => $this->userService->all()])
+            "slot" => View::page("users/index", ['users' => $this->userService->getPage($page, $perPage)])
         ]);
     }
 

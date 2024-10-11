@@ -20,7 +20,7 @@ class UserRepository
      */
     public function getById(int $id): User
     {
-        $results = $this->connection->select("SELECT * FROM users WHERE id = :id", [":id" => $id]);
+        $results = $this->connection->select("SELECT * FROM users WHERE id = :id LIMIT 1", [":id" => $id]);
 
         $user = array_shift($results);
 
@@ -30,9 +30,12 @@ class UserRepository
     /**
      * @return User[]
      */
-    public function all(): array
+    public function getPage(int $page, int $perPage): array
     {
-        $results = $this->connection->select("SELECT * FROM users");
+        $results = $this->connection->select(
+            "SELECT * FROM users LIMIT :limit OFFSET :offset",
+            [":limit" => $perPage, ":offset" => $perPage * ($page - 1)]
+        );
 
         $users = [];
 

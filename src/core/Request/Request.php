@@ -24,6 +24,12 @@ class Request
 
     private string $content;
 
+    private RequestParameters $get;
+    private RequestParameters $post;
+    private RequestParameters $server;
+    private RequestParameters $cookies;
+    private RequestParameters $files;
+
 
     /**
      * @param array $get
@@ -34,8 +40,13 @@ class Request
      */
     public function __construct(array $get = [], array $post = [], array $server = [], array $cookies = [], array $files = [])
     {
-        $this->method = $server['REQUEST_METHOD'];
+        $this->get = new RequestParameters($get);
+        $this->post = new RequestParameters($post);
+        $this->server = new RequestParameters($server);
+        $this->cookies = new RequestParameters($cookies);
+        $this->files = new RequestParameters($files);
 
+        $this->method = $server['REQUEST_METHOD'];
         $this->uri = $this->prepareUri($server['REQUEST_URI']);;
     }
 
@@ -70,5 +81,33 @@ class Request
         }
 
         return $uri;
+    }
+
+    /**
+     * So... getGet!
+     */
+    public function getGet(): RequestParameters
+    {
+        return $this->get;
+    }
+
+    public function getPost(): RequestParameters
+    {
+        return $this->post;
+    }
+
+    public function getServer(): RequestParameters
+    {
+        return $this->server;
+    }
+
+    public function getCookies(): RequestParameters
+    {
+        return $this->cookies;
+    }
+
+    public function getFiles(): RequestParameters
+    {
+        return $this->files;
     }
 }

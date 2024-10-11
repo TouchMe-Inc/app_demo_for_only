@@ -9,6 +9,8 @@ class User
     private string $email;
     private string $phone;
 
+    private string $password;
+
     public function getId(): int
     {
         return $this->id;
@@ -47,5 +49,15 @@ class User
     public function setPhone(string $phone): void
     {
         $this->phone = $phone;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
     }
 }

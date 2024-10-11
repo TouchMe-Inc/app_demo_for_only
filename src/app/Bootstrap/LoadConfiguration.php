@@ -4,7 +4,7 @@ namespace App\Bootstrap;
 
 use Core\Application;
 use Core\Bootstrap\Interface\Bootstrapper;
-use Core\Config\Configuration;
+use Core\Configuration\Configuration;
 
 class LoadConfiguration implements Bootstrapper
 {

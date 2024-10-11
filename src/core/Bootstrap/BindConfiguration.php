@@ -4,7 +4,7 @@ namespace Core\Bootstrap;
 
 use Core\Application;
 use Core\Bootstrap\Interface\Bootstrapper;
-use Core\Config\Configuration;
+use Core\Configuration\Configuration;
 
 class BindConfiguration implements Bootstrapper
 {

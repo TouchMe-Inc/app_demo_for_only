@@ -6,7 +6,7 @@ use Core\Bootstrap\BindApplication;
 use Core\Bootstrap\BindConfiguration;
 use Core\Bootstrap\BindContainer;
 use Core\Bootstrap\HandleException;
-use Core\Config\Configuration;
+use Core\Configuration\Configuration;
 use Core\Container\Container;
 use Core\Request\Request;
 use Core\Routing\Dispatcher;

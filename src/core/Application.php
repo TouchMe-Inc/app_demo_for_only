@@ -94,9 +94,13 @@ class Application
             return;
         }
 
+        $request = Request::createFromGlobal();
+
+        $this->container()->addInstance(Request::class, $request);
+
         $dispatcher = $this->container()->make(Dispatcher::class);
 
-        $dispatcher->dispatch(Request::createFromGlobal());
+        $dispatcher->dispatch($request);
 
         $this->runs = true;
     }

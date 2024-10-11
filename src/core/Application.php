@@ -111,9 +111,9 @@ class Application
 
         $this->container()->addInstance(Request::class, $request);
 
-        $dispatcher = $this->container()->make(Dispatcher::class);
+        $response = $this->router->dispatchRequest($request);
 
-        $dispatcher->dispatch($request);
+        $response->send();
 
         $this->runs = true;
     }

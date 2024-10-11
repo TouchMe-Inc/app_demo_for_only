@@ -3,6 +3,7 @@
 namespace Core\Routing;
 
 use ArrayIterator;
+use Core\Routing\Exception\RouteNotFoundException;
 use Countable;
 use IteratorAggregate;
 
@@ -36,14 +37,36 @@ class RouteCollection implements Countable, IteratorAggregate
     }
 
     /**
-     * @param Route $route
+     * @param string $method
+     * @param mixed $uri
+     * @param $handler
      * @return void
      */
-    public function add(Route $route): void
+    public function add(string $method, string $uri, mixed $handler): void
     {
-        $method = $route->getMethod();
+        $route = new Route($method, $uri, $handler);
         $this->routes[] = $route;
         $this->routesByMethod[$method][] = $route;
+    }
+
+    /**
+     * @param string $method
+     * @param mixed $uri
+     * @return Route
+     * @throws RouteNotFoundException
+     */
+    public function match(string $method, mixed $uri): Route
+    {
+        $routesByMethod = $this->getRoutesByMethod($method);
+
+        /** @var Route $route */
+        foreach ($routesByMethod as $route) {
+            if ($route->compareUri($uri)) {
+                return $route;
+            }
+        }
+
+        throw new RouteNotFoundException("Route not found");
     }
 
     /**

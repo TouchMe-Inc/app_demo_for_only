@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\AuthService;
 use App\Views\View;
+use Core\Request\Request;
 
 class AuthController
 {
@@ -15,15 +16,22 @@ class AuthController
 
     public function signIn(): string
     {
+        /** @var Request $request */
+        $request = container()->make(Request::class);
+
+        $dumbPOST = $request->getPost();
+
+        print_r($dumbPOST);
+
         return View::layout("base", [
-            "slot" => View::page("auth/signin",)
+            "slot" => View::page("auth/signin")
         ]);
     }
 
     public function signUp(): string
     {
         return View::layout("base", [
-            "slot" => View::page("auth/signup",)
+            "slot" => View::page("auth/signup")
         ]);
     }
 

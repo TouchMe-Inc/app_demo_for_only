@@ -24,11 +24,11 @@ class Request
 
     private string $content;
 
-    private RequestParameters $get;
-    private RequestParameters $post;
-    private RequestParameters $server;
-    private RequestParameters $cookies;
-    private RequestParameters $files;
+    private ParameterStorage $get;
+    private ParameterStorage $post;
+    private ParameterStorage $server;
+    private ParameterStorage $cookies;
+    private ParameterStorage $files;
 
 
     /**
@@ -40,11 +40,11 @@ class Request
      */
     public function __construct(array $get = [], array $post = [], array $server = [], array $cookies = [], array $files = [])
     {
-        $this->get = new RequestParameters($get);
-        $this->post = new RequestParameters($post);
-        $this->server = new RequestParameters($server);
-        $this->cookies = new RequestParameters($cookies);
-        $this->files = new RequestParameters($files);
+        $this->get = new ParameterStorage($get);
+        $this->post = new ParameterStorage($post);
+        $this->server = new ParameterStorage($server);
+        $this->cookies = new ParameterStorage($cookies);
+        $this->files = new ParameterStorage($files);
 
         $this->method = $server['REQUEST_METHOD'];
         $this->uri = $this->prepareUri($server['REQUEST_URI']);;
@@ -86,27 +86,27 @@ class Request
     /**
      * So... getGet!
      */
-    public function getGet(): RequestParameters
+    public function getGet(): ParameterStorage
     {
         return $this->get;
     }
 
-    public function getPost(): RequestParameters
+    public function getPost(): ParameterStorage
     {
         return $this->post;
     }
 
-    public function getServer(): RequestParameters
+    public function getServer(): ParameterStorage
     {
         return $this->server;
     }
 
-    public function getCookies(): RequestParameters
+    public function getCookies(): ParameterStorage
     {
         return $this->cookies;
     }
 
-    public function getFiles(): RequestParameters
+    public function getFiles(): ParameterStorage
     {
         return $this->files;
     }

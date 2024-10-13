@@ -2,7 +2,7 @@
 
 namespace Core\Request;
 
-class RequestParameters
+class ParameterStorage
 {
     private array $parameters = [];
 

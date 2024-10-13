@@ -19,12 +19,15 @@ use App\Views\View;
                                    name="nameOrEmail"
                                    class="w-full text-sm px-3 py-2 bg-gray-800 rounded-lg border border-transparent focus:border-purple-600 focus:outline-none"/>
                         </div>
-                        <div class="mb-8">
+                        <div class="mb-4">
                             <label for="password" class="block mb-1 text-sm">Password <span
                                         class="text-red-500">*</span></label>
                             <input id="password" type="password" required
                                    name="password"
                                    class="w-full text-sm px-3 py-2 bg-gray-800 rounded-lg border border-transparent focus:border-purple-600 focus:outline-none"/>
+                        </div>
+                        <div class="mb-8 h-[100px]">
+                            <?=View::component("YandexCaptcha") ?>
                         </div>
                         <div>
                             <button class="w-full px-3 py-2 rounded-lg bg-purple-600" type="submit">Sign In</button>
@@ -33,7 +36,8 @@ use App\Views\View;
                     <div class="pt-3">
                         <div class="text-gray-400">
                             Don't have an account? <a href="/signup"
-                                                      class="hover:text-black text-gray-700 transition-colors duration-300 dark:text-gray-300 dark:hover:text-white">Sign Up</a>
+                                                      class="hover:text-black text-gray-700 transition-colors duration-300 dark:text-gray-300 dark:hover:text-white">Sign
+                                Up</a>
                         </div>
                     </div>
                 </div>

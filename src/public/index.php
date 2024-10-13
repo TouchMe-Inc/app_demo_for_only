@@ -1,5 +1,6 @@
 <?php /** @noinspection PhpUnhandledExceptionInspection */
 
+use App\Bootstrap\BindYandexSmartCaptcha;
 use App\Bootstrap\CreateDatabaseConnection;
 use App\Bootstrap\LoadConfiguration;
 use App\Controllers\AuthController;
@@ -26,7 +27,8 @@ $app->router()
 // Bootstrap the Application
 $app->bootstrap([
     LoadConfiguration::class,
-    CreateDatabaseConnection::class
+    CreateDatabaseConnection::class,
+    BindYandexSmartCaptcha::class,
 ]);
 
 // Run the Application

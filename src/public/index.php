@@ -7,6 +7,7 @@ use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\UserController;
 use Core\Application;
+use Core\Routing\Router;
 
 // Register Composer
 require __DIR__ . '/../../vendor/autoload.php';
@@ -15,12 +16,12 @@ require __DIR__ . '/../../vendor/autoload.php';
 $app = Application::create(dirname(__DIR__));
 
 $app->router()
-    ->get("/users/{id}", [UserController::class, "view"])
-    ->get("/users", [UserController::class, "index"])
-    ->get("/signin", [AuthController::class, "signIn"])
-    ->post("/signin", [AuthController::class, "signIn"])
-    ->post("/signup", [AuthController::class, "signUp"])
-    ->get("/signup", [AuthController::class, "signUp"])
+    ->group('/users', function (Router $router) {
+        $router->get("/{id}", [UserController::class, "view"]);
+        $router->get("", [UserController::class, "index"]);
+    })
+    ->add(['GET', 'POST'], "/signin", [AuthController::class, "signIn"])
+    ->add(['GET', 'POST'], "/signup", [AuthController::class, "signUp"])
     ->get("/signout", [AuthController::class, "signOut"])
     ->get("/", [HomeController::class, "index"]);
 

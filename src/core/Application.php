@@ -142,7 +142,7 @@ class Application
 
         $this->configuration = new Configuration();
 
-        $this->router = new Router();
+        $this->router = new Router($this->container);
 
         $this->bootstrap($this->bootstrappers);
     }

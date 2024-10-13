@@ -10,10 +10,14 @@ use Core\Routing\Exception\RouteNotFoundException;
 class Router
 {
     private RouteCollection $collection;
+    private Container $container;
 
-    public function __construct()
+    private string $currentGroupPrefix = "";
+
+    public function __construct(Container $container)
     {
         $this->collection = new RouteCollection();
+        $this->container = $container;
     }
 
     /**
@@ -23,8 +27,7 @@ class Router
      */
     public function get(string $uri, mixed $handler): self
     {
-        $this->collection->add(Request::METHOD_GET, $uri, $handler);
-        return $this;
+        return $this->add([Request::METHOD_GET], $uri, $handler);
     }
 
     /**
@@ -34,8 +37,7 @@ class Router
      */
     public function post(string $uri, mixed $handler): self
     {
-        $this->collection->add(Request::METHOD_POST, $uri, $handler);
-        return $this;
+        return $this->add([Request::METHOD_POST], $uri, $handler);
     }
 
 
@@ -46,8 +48,7 @@ class Router
      */
     public function put(string $uri, mixed $handler): self
     {
-        $this->collection->add(Request::METHOD_PUT, $uri, $handler);
-        return $this;
+        return $this->add([Request::METHOD_PUT], $uri, $handler);
     }
 
 
@@ -58,8 +59,7 @@ class Router
      */
     public function patch(string $uri, mixed $handler): self
     {
-        $this->collection->add(Request::METHOD_PATCH, $uri, $handler);
-        return $this;
+        return $this->add([Request::METHOD_PATCH], $uri, $handler);
     }
 
     /**
@@ -69,8 +69,7 @@ class Router
      */
     public function delete(string $uri, mixed $handler): self
     {
-        $this->collection->add(Request::METHOD_DELETE, $uri, $handler);
-        return $this;
+        return $this->add([Request::METHOD_DELETE], $uri, $handler);
     }
 
     /**
@@ -80,8 +79,7 @@ class Router
      */
     public function head(string $uri, mixed $handler): self
     {
-        $this->collection->addRoute(Request::METHOD_HEAD, $uri, $handler);
-        return $this;
+        return $this->addRoute([Request::METHOD_HEAD], $uri, $handler);
     }
 
     /**
@@ -91,7 +89,31 @@ class Router
      */
     public function options(string $uri, mixed $handler): self
     {
-        $this->collection->add(Request::METHOD_OPTIONS, $uri, $handler);
+        return $this->add([Request::METHOD_OPTIONS], $uri, $handler);
+    }
+
+    public function group(string $prefix, callable $callback): self
+    {
+        $previousGroupPrefix = $this->currentGroupPrefix;
+        $this->currentGroupPrefix = $previousGroupPrefix . $prefix;
+        $callback($this);
+        $this->currentGroupPrefix = $previousGroupPrefix;
+
+        return $this;
+    }
+
+    /**
+     * @param array $methods
+     * @param string $uri
+     * @param mixed $handler
+     * @return $this
+     */
+    public function add(array $methods, string $uri, mixed $handler)
+    {
+        foreach ($methods as $method) {
+            $this->collection->add($method, $this->currentGroupPrefix . $uri, $handler);
+        }
+
         return $this;
     }
 
@@ -149,7 +171,7 @@ class Router
     private function resolveHandler(\Closure|array $handler): callable
     {
         if (is_array($handler) && is_string($handler[0])) {
-            $handler[0] = (new Container())->make($handler[0]);
+            $handler[0] = $this->container->make($handler[0]);
         }
 
         if (is_callable($handler)) {

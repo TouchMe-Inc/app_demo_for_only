@@ -111,7 +111,7 @@ class Application
 
         $this->container()->addInstance(Request::class, $request);
 
-        $response = $this->router->dispatchRequest($request);
+        $response = $this->router->dispatchByRequest($request);
 
         $response->send();
 

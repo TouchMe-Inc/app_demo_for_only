@@ -133,9 +133,13 @@ class Router
      * @throws RouteNotFoundException
      * @throws Exception
      */
-    public function dispatchRequest(Request $request): Response
+    public function dispatchByRequest(Request $request): Response
     {
         $route = $this->matchByRequest($request);
+
+        if (!$route) {
+            throw new RouteNotFoundException("Route not found");
+        }
 
         $callbackParameters = [];
 

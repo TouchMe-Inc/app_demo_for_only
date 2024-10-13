@@ -25,7 +25,7 @@ class UserService
 
     public function getById(int $id)
     {
-        $user = $this->userRepository->getPage($id);
+        $user = $this->userRepository->getById($id);
 
         // code..
 

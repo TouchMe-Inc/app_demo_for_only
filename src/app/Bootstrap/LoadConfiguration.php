@@ -14,7 +14,7 @@ class LoadConfiguration implements Bootstrapper
         $configPath = $app->getBasePath('config' . DIRECTORY_SEPARATOR . '*.php');
 
         foreach (glob($configPath) as $filePath) {
-            $app->configuration()->set(basename($filePath, ".php"), require $filePath);
+            $app->container()->make(Configuration::class)->set(basename($filePath, ".php"), require $filePath);
         }
     }
 }

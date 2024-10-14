@@ -7,6 +7,7 @@ use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\UserController;
 use Core\Application;
+use Core\Request\Request;
 use Core\Routing\Router;
 
 // Register Composer
@@ -33,4 +34,4 @@ $app->bootstrap([
 ]);
 
 // Run the Application
-$app->run();
+$app->handleRequest(Request::createFromGlobal());

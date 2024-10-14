@@ -2,14 +2,9 @@
 
 namespace Core;
 
-use Core\Bootstrap\BindApplication;
-use Core\Bootstrap\BindConfiguration;
-use Core\Bootstrap\BindContainer;
 use Core\Bootstrap\HandleException;
-use Core\Configuration\Configuration;
 use Core\Container\Container;
 use Core\Request\Request;
-use Core\Routing\Dispatcher;
 use Core\Routing\Router;
 use Exception;
 
@@ -29,11 +24,7 @@ class Application
 
     private Container $container;
 
-    private Configuration $configuration;
-
     private Router $router;
-
-    private bool $runs = false;
 
     /**
      * Bootstrappers for the application.
@@ -41,9 +32,6 @@ class Application
      * @var array
      */
     private array $bootstrappers = [
-        BindApplication::class,
-        BindContainer::class,
-        BindConfiguration::class,
         HandleException::class,
     ];
 
@@ -84,16 +72,6 @@ class Application
     /**
      * Get the configuration associated with the application.
      *
-     * @return Configuration
-     */
-    public function configuration(): Configuration
-    {
-        return $this->configuration;
-    }
-
-    /**
-     * Get the configuration associated with the application.
-     *
      * @return Router
      */
     public function router(): Router
@@ -101,24 +79,18 @@ class Application
         return $this->router;
     }
 
-    public function run(): void
+    public function handleRequest(Request $request): void
     {
-        if ($this->runs) {
-            return;
-        }
-
-        $request = Request::createFromGlobal();
-
         $this->container()->addInstance(Request::class, $request);
 
-        $response = $this->router->dispatchByRequest($request);
-
-        $response->send();
-
-        $this->runs = true;
+        $this->router()->dispatchByRequest($request)->send();
     }
 
-    public function getBasePath($path = ''): string
+    /**
+     * @param string $path
+     * @return string
+     */
+    public function getBasePath(string $path = ''): string
     {
         return $this->basePath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
@@ -137,14 +109,19 @@ class Application
     private function __construct(string $basePath = '')
     {
         $this->basePath = $basePath;
-
         $this->container = new Container();
-
-        $this->configuration = new Configuration();
-
         $this->router = new Router($this->container);
 
+        $this->bindBaseInstances();
+
         $this->bootstrap($this->bootstrappers);
+    }
+
+    private function bindBaseInstances(): void
+    {
+        $this->container->addInstance(Application::class, $this);
+        $this->container->addInstance(Container::class, $this->container);
+        $this->container->addInstance(Router::class, $this->router);
     }
 
     private function __clone()

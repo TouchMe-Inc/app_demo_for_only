@@ -81,9 +81,9 @@ class Application
 
     public function handleRequest(Request $request): void
     {
-        $this->container()->addInstance(Request::class, $request);
+        $this->container->addInstance(Request::class, $request);
 
-        $this->router()->dispatchByRequest($request)->send();
+        $this->router->dispatchByRequest($request)->send();
     }
 
     /**

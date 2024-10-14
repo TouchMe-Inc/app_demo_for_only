@@ -17,15 +17,17 @@ class UserRepository
 
     /**
      * @param int $id
-     * @return User
+     * @return User|null
      */
-    public function getById(int $id): User
+    public function getById(int $id): ?User
     {
-        $results = $this->connection->select("SELECT * FROM users WHERE id = :id LIMIT 1", [":id" => $id]);
+        $result = $this->connection->selectOne("SELECT * FROM users WHERE id = :id LIMIT 1", [":id" => $id]);
 
-        $user = array_shift($results);
+        if (!is_null($result)) {
+            return $this->mapToObject($result);
+        }
 
-        return $this->mapToObject($user);
+        return null;
     }
 
     /**

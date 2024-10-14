@@ -2,6 +2,7 @@
 
 use Core\Application;
 use Core\Container\Container;
+use Core\Routing\Router;
 
 if (!function_exists('app')) {
     function app(): Application
@@ -14,6 +15,13 @@ if (!function_exists('container')) {
     function container(): Container
     {
         return app()->container();
+    }
+}
+
+if (!function_exists('router')) {
+    function router(): Router
+    {
+        return app()->router();
     }
 }
 

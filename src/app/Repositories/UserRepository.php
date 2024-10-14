@@ -51,6 +51,28 @@ class UserRepository
         return $users;
     }
 
+    public function create(array $data): bool
+    {
+        return $this->connection->insert("INSERT INTO users (name, email, phone, password) VALUES (:name, :email, :phone, :password)", $data);
+    }
+
+    public function update(int $id, array $data): int
+    {
+        return $this->connection->update("UPDATE users SET name = :name, email = :email, phone = :phone WHERE id = :id", [":id" => $id, ...$data]);
+    }
+
+    public function delete(int $id): int
+    {
+        return $this->connection->delete("DELETE FROM users WHERE id = :id", [":id" => $id]);
+    }
+
+    public function existsById(int $id): bool
+    {
+        $result = $this->connection->selectOne("SELECT COUNT(id) FROM users");
+
+        return (int)$result > 0;
+    }
+
     private function mapToObject(array $result): User
     {
         $user = new User();

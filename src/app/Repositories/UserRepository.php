@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Collections\UserCollection;
+use App\Mappers\UserMapper;
 use App\Models\User;
 use Core\Database\Interface\Connection;
 
@@ -24,7 +25,7 @@ class UserRepository
         $result = $this->connection->selectOne("SELECT * FROM users WHERE id = :id LIMIT 1", [":id" => $id]);
 
         if (!is_null($result)) {
-            return $this->mapToObject($result);
+            return UserMapper::toObject($result);
         }
 
         return null;
@@ -45,7 +46,7 @@ class UserRepository
         $users = new UserCollection();
 
         foreach ($results as $result) {
-            $users->push($this->mapToObject($result));
+            $users->push(UserMapper::toObject($result));
         }
 
         return $users;
@@ -71,17 +72,5 @@ class UserRepository
         $result = $this->connection->selectOne("SELECT COUNT(id) FROM users");
 
         return (int)$result > 0;
-    }
-
-    private function mapToObject(array $result): User
-    {
-        $user = new User();
-
-        $user->setId($result["id"]);
-        $user->setName($result["name"]);
-        $user->setEmail($result["email"]);
-        $user->setPhone($result["phone"]);
-
-        return $user;
     }
 }

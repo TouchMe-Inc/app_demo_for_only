@@ -40,6 +40,13 @@ abstract class Connection implements Interface\Connection
         return $statement->fetchAll();
     }
 
+    public function selectOne(string $query, array $bindings = [])
+    {
+        $results = $this->select($query, $bindings);
+
+        return array_shift($results);
+    }
+
     public function update(string $query, array $bindings = []): int
     {
         $statement = $this->prepareStatement($query, $bindings);

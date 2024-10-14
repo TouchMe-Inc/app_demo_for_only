@@ -20,7 +20,7 @@ class UserController
         $perPage = 10;
 
         return View::layout("base", [
-            "slot" => View::page("users/index", ['users' => $this->userService->getPage($page, $perPage)])
+            "slot" => View::page("users/index", ['users' => $this->userService->getPage($page, $perPage)->all()])
         ]);
     }
 

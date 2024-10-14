@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Collections\UserCollection;
 use App\Models\User;
 use Core\Database\Interface\Connection;
 
@@ -28,19 +29,21 @@ class UserRepository
     }
 
     /**
-     * @return User[]
+     * @param int $page
+     * @param int $perPage
+     * @return UserCollection
      */
-    public function getPage(int $page, int $perPage): array
+    public function getPage(int $page, int $perPage): UserCollection
     {
         $results = $this->connection->select(
             "SELECT * FROM users LIMIT :limit OFFSET :offset",
             [":limit" => $perPage, ":offset" => $perPage * ($page - 1)]
         );
 
-        $users = [];
+        $users = new UserCollection();
 
         foreach ($results as $result) {
-            $users[] = $this->mapToObject($result);
+            $users->push($this->mapToObject($result));
         }
 
         return $users;

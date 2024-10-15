@@ -10,7 +10,7 @@ class HomeController
     public function index(): string
     {
         return View::layout("base", [
-            "slot" => View::page("home/index", ["customString" => "Is my custom string"])
+            "slot" => View::page("home/index")
         ]);
     }
 }

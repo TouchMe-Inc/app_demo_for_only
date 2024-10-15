@@ -6,6 +6,9 @@ use Core\Request\Request;
 use Core\Routing\Router;
 
 if (!function_exists('app')) {
+    /**
+     * @return Application
+     */
     function app(): Application
     {
         return Application::getInstance();
@@ -13,6 +16,10 @@ if (!function_exists('app')) {
 }
 
 if (!function_exists('container')) {
+    /**
+     * @return Container
+     * @throws Exception
+     */
     function container(): Container
     {
         return app()->container();
@@ -20,6 +27,9 @@ if (!function_exists('container')) {
 }
 
 if (!function_exists('router')) {
+    /**
+     * @return Router
+     */
     function router(): Router
     {
         return app()->router();
@@ -27,6 +37,9 @@ if (!function_exists('router')) {
 }
 
 if (!function_exists('basepath')) {
+    /**
+     * @return string
+     */
     function basepath(): string
     {
         return app()->getBasePath();

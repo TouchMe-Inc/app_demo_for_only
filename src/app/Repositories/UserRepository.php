@@ -22,7 +22,22 @@ class UserRepository
      */
     public function getById(int $id): ?User
     {
-        $result = $this->connection->selectOne("SELECT * FROM users WHERE id = :id LIMIT 1", [":id" => $id]);
+        $result = $this->connection->selectOne("SELECT * FROM users WHERE id = :id LIMIT 1",
+            [":id" => $id]
+        );
+
+        if (!is_null($result)) {
+            return UserMapper::toObject($result);
+        }
+
+        return null;
+    }
+
+    public function getByNameOrEmail(string $nameOrEmail): ?User
+    {
+        $result = $this->connection->selectOne("SELECT * FROM users WHERE name = :name OR email = :email LIMIT 1",
+            [":name" => $nameOrEmail, ":email" => $nameOrEmail]
+        );
 
         if (!is_null($result)) {
             return UserMapper::toObject($result);

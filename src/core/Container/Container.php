@@ -47,7 +47,7 @@ class Container
      * @param mixed $instance
      * @return void
      */
-    public function addInstance(string $className, mixed $instance): void
+    public function bind(string $className, mixed $instance): void
     {
         $this->instances[$className] = $instance;
     }
@@ -58,7 +58,7 @@ class Container
      * @param string $className
      * @return void
      */
-    public function removeInstance(string $className): void
+    public function forget(string $className): void
     {
         unset($this->instances[$className]);
     }
@@ -82,8 +82,10 @@ class Container
 
         $constructor = $reflector->getConstructor();
 
-        if (is_null($constructor)) {
-            return new $className;
+        if (is_null($constructor)) try {
+            return $reflector->newInstance();
+        } catch (ReflectionException $e) {
+            throw new BuildClassException($e->getMessage(), 0, $e);
         }
 
         $dependencies = $constructor->getParameters();

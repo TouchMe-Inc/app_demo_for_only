@@ -22,7 +22,7 @@ class CreateDatabaseConnection implements Bootstrapper
             ->make(ConnectionFactory::class)
             ->createConnection($driver, $options);
 
-        $app->container()->addInstance(
+        $app->container()->bind(
             Connection::class,
             $connection
         );

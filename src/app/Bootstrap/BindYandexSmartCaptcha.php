@@ -15,6 +15,6 @@ class BindYandexSmartCaptcha implements Bootstrapper
         $configuration = $app->container()->make(Configuration::class)->get("yandex_smart_captcha");
         $yandexSmartCaptcha = new YandexSmartCaptcha($configuration['url'], $configuration['client_key'], $configuration['server_key']);
 
-        $app->container()->addInstance(YandexSmartCaptcha::class, $yandexSmartCaptcha);
+        $app->container()->bind(YandexSmartCaptcha::class, $yandexSmartCaptcha);
     }
 }

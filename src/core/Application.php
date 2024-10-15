@@ -81,7 +81,7 @@ class Application
 
     public function handleRequest(Request $request): void
     {
-        $this->container->addInstance(Request::class, $request);
+        $this->container->bind(Request::class, $request);
 
         $this->router->dispatchByRequest($request)->send();
     }
@@ -119,9 +119,9 @@ class Application
 
     private function bindBaseInstances(): void
     {
-        $this->container->addInstance(Application::class, $this);
-        $this->container->addInstance(Container::class, $this->container);
-        $this->container->addInstance(Router::class, $this->router);
+        $this->container->bind(Application::class, $this);
+        $this->container->bind(Container::class, $this->container);
+        $this->container->bind(Router::class, $this->router);
     }
 
     private function __clone()

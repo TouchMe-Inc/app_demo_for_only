@@ -2,6 +2,7 @@
 
 use Core\Application;
 use Core\Container\Container;
+use Core\Request\Request;
 use Core\Routing\Router;
 
 if (!function_exists('app')) {
@@ -29,5 +30,15 @@ if (!function_exists('basepath')) {
     function basepath(): string
     {
         return app()->getBasePath();
+    }
+}
+
+if (!function_exists('request')) {
+    /**
+     * @return Request
+     */
+    function request(): Request
+    {
+        return app()->container()->make(Request::class);
     }
 }

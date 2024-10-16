@@ -2,7 +2,9 @@
 
 namespace Core\Response;
 
-class Response
+use Core\Response\interface\Response as ResponseInterface;
+
+class Response implements ResponseInterface
 {
     public const SWITCHING_PROTOCOLS = 101;
     public const OK = 200;

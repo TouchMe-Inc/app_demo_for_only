@@ -4,7 +4,6 @@ namespace Core\Collection;
 
 use ArrayAccess;
 use Countable;
-use Traversable;
 
 class Collection implements Countable, ArrayAccess
 {

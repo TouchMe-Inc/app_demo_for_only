@@ -83,7 +83,7 @@ class Application
     {
         $this->container->bind(Request::class, $request);
 
-        $this->router->dispatchByRequest($request)->send();
+        $this->router->dispatch($request)->send();
     }
 
     /**

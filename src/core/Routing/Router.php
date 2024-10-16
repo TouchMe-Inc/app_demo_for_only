@@ -122,7 +122,7 @@ class Router
      * @return Route
      * @throws RouteNotFoundException
      */
-    public function matchByRequest(Request $request): Route
+    public function match(Request $request): Route
     {
         return $this->collection->match($request->getMethod(), $request->getUri());
     }
@@ -133,9 +133,10 @@ class Router
      * @throws RouteNotFoundException
      * @throws Exception
      */
-    public function dispatchByRequest(Request $request): Response
+    // TODO: Refactoring
+    public function dispatch(Request $request): Response
     {
-        $route = $this->matchByRequest($request);
+        $route = $this->match($request);
 
         if (!$route) {
             throw new RouteNotFoundException("Route not found");
@@ -146,7 +147,6 @@ class Router
         if ($route->getVariableNames() && preg_match($route->getRegex(), $request->getUri(), $matches) && $matches) {
             $variableValues = array_slice($matches, 1);
 
-            // TODO: check this case
             if (count($variableValues) !== count($route->getVariableNames())) {
                 throw new Exception("Route variables do not match.");
             }

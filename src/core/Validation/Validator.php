@@ -4,7 +4,6 @@ namespace Core\Validation;
 
 use Core\Validation\Interface\Rule;
 use Core\Validation\Interface\Validator as ValidatorInterface;
-use Core\Validation\Rule\RequireRule;
 
 class Validator implements ValidatorInterface
 {

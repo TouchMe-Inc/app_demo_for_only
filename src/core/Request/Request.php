@@ -2,7 +2,7 @@
 
 namespace Core\Request;
 
-use Core\Request\interface\Request as RequestInterface;
+use Core\Request\Interface\Request as RequestInterface;
 
 class Request implements RequestInterface
 {

@@ -16,9 +16,15 @@ class Validator implements ValidatorInterface
     {
         $this->errors = [];
 
-        // TODO: Implement validate() method.
+        foreach ($rules as $field => $validators) if (isset($data[$field])) {
+            foreach ($validators as $validator) {
+                if (!$validator->validate($data[$field])) {
+                    $this->errors[$field][] = $validator::class;
+                }
+            }
+        }
 
-        return true;
+        return empty($this->errors);
     }
 
     /**

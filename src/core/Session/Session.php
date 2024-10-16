@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Request;
+namespace Core\Session;
 
 use Exception;
 use const PHP_SESSION_ACTIVE;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Validation\Rule;
+namespace Core\Validation\interface;
 
 interface Rule
 {

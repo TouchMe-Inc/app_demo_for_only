@@ -2,7 +2,7 @@
 
 namespace Core\Validation\Rule;
 
-use Core\Validation\interface\Rule;
+use Core\Validation\Interface\Rule;
 
 class RequireRule implements Rule
 {

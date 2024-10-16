@@ -2,7 +2,7 @@
 
 namespace Core\Validation;
 
-use Core\Validation\interface\Validator as ValidatorInterface;
+use Core\Validation\Interface\Validator as ValidatorInterface;
 
 class Validator implements ValidatorInterface
 {

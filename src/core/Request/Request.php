@@ -3,6 +3,7 @@
 namespace Core\Request;
 
 use Core\Request\Interface\Request as RequestInterface;
+use Core\Session\interface\Session as SessionInterface;
 
 class Request implements RequestInterface
 {
@@ -24,7 +25,6 @@ class Request implements RequestInterface
      */
     private string $uri;
 
-    private string $content;
 
     private ParameterStorage $query;
     private ParameterStorage $post;
@@ -32,6 +32,7 @@ class Request implements RequestInterface
     private ParameterStorage $cookies;
     private ParameterStorage $files;
 
+    private SessionInterface|null $session;
 
     /**
      * @param array $get
@@ -48,8 +49,9 @@ class Request implements RequestInterface
         $this->cookies = new ParameterStorage($cookies);
         $this->files = new ParameterStorage($files);
 
-        $this->method = $server['REQUEST_METHOD'];
-        $this->uri = $this->prepareUri($server['REQUEST_URI']);;
+        $this->method = $this->server->get($server['REQUEST_METHOD'], Request::METHOD_GET);
+        $this->uri = $this->prepareUri($this->server->get($server['REQUEST_URI'], '/'));
+        $this->session = null;
     }
 
     /**
@@ -108,5 +110,20 @@ class Request implements RequestInterface
     public function getFiles(): ParameterStorage
     {
         return $this->files;
+    }
+
+    public function getSession(): SessionInterface
+    {
+        return $this->session;
+    }
+
+    public function setSession(SessionInterface $session): void
+    {
+        $this->session = $session;
+    }
+
+    public function hasSession(): bool
+    {
+        return $this->session != null;
     }
 }

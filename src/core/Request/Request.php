@@ -2,7 +2,9 @@
 
 namespace Core\Request;
 
-class Request
+use Core\Request\interface\Request as RequestInterface;
+
+class Request implements RequestInterface
 {
     public const METHOD_HEAD = 'HEAD';
     public const METHOD_GET = 'GET';

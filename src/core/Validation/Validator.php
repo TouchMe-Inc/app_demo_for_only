@@ -2,7 +2,9 @@
 
 namespace Core\Validation;
 
+use Core\Validation\Interface\Rule;
 use Core\Validation\Interface\Validator as ValidatorInterface;
+use Core\Validation\Rule\RequireRule;
 
 class Validator implements ValidatorInterface
 {
@@ -17,6 +19,7 @@ class Validator implements ValidatorInterface
         $this->errors = [];
 
         foreach ($rules as $field => $validators) if (isset($data[$field])) {
+            /** @var Rule $validator */
             foreach ($validators as $validator) {
                 if (!$validator->validate($data[$field])) {
                     $this->errors[$field][] = $validator::class;

@@ -2,10 +2,11 @@
 
 namespace Core\Database;
 
+use \Core\Database\Interface\Connection as ConnectionInterface;
 use PDO;
 use PDOStatement;
 
-abstract class Connection implements Interface\Connection
+abstract class Connection implements ConnectionInterface
 {
     protected PDO|null $pdo;
 

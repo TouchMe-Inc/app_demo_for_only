@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Database;
+namespace Core\Database\Connector;
 
 use Core\Database\Interface\Connector;
 use PDO;

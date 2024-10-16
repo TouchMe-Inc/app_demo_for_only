@@ -6,6 +6,7 @@ use Core\Bootstrap\HandleException;
 use Core\Container\Container;
 use Core\Request\Request;
 use Core\Routing\Router;
+use Core\Session\interface\Session as SessionInterface;
 use Exception;
 
 class Application
@@ -81,6 +82,11 @@ class Application
 
     public function handleRequest(Request $request): void
     {
+        // TODO: Simplify this somehow / come up with another solution
+        if (!$request->hasSession() && $this->container->hasInstance(SessionInterface::class)) {
+            $request->setSession($this->container->make(SessionInterface::class));
+        }
+
         $this->container->bind(Request::class, $request);
 
         $this->router->dispatch($request)->send();

@@ -26,7 +26,7 @@ class Request implements RequestInterface
 
     private string $content;
 
-    private ParameterStorage $get;
+    private ParameterStorage $query;
     private ParameterStorage $post;
     private ParameterStorage $server;
     private ParameterStorage $cookies;
@@ -42,7 +42,7 @@ class Request implements RequestInterface
      */
     public function __construct(array $get = [], array $post = [], array $server = [], array $cookies = [], array $files = [])
     {
-        $this->get = new ParameterStorage($get);
+        $this->query = new ParameterStorage($get);
         $this->post = new ParameterStorage($post);
         $this->server = new ParameterStorage($server);
         $this->cookies = new ParameterStorage($cookies);
@@ -85,12 +85,9 @@ class Request implements RequestInterface
         return $uri;
     }
 
-    /**
-     * So... getGet!
-     */
-    public function getGet(): ParameterStorage
+    public function getQuery(): ParameterStorage
     {
-        return $this->get;
+        return $this->query;
     }
 
     public function getPost(): ParameterStorage

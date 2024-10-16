@@ -80,8 +80,14 @@ class Request implements RequestInterface
 
     private function prepareUri(string $uri): string
     {
+        // ?: Who are you? Duplicate?
         if (str_contains($uri, '?')) {
             $uri = substr($uri, 0, strpos($uri, '?'));
+        }
+
+        // #: I am you, only better
+        if (str_contains($uri, '#')) {
+            $uri = substr($uri, 0, strpos($uri, '#'));
         }
 
         return $uri;

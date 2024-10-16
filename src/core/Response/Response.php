@@ -2,7 +2,7 @@
 
 namespace Core\Response;
 
-use Core\Response\interface\Response as ResponseInterface;
+use Core\Response\Interface\Response as ResponseInterface;
 
 class Response implements ResponseInterface
 {

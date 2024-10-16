@@ -13,11 +13,6 @@ class Session implements SessionInterface
         session_register_shutdown();
     }
 
-    /**
-     * @param array $options
-     * @return void
-     * @throws Exception
-     */
     public function start(array $options = []): void
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
@@ -38,5 +33,32 @@ class Session implements SessionInterface
         if (!session_destroy()) {
             throw new Exception('Session destroy failed');
         }
+    }
+
+    public function set(string $key, $value): void
+    {
+        $_SESSION[$key] = $value;
+    }
+
+    public function get(string $key, $default = null): mixed
+    {
+        return $_SESSION[$key] ?? $default;
+    }
+
+    public function has(string $key): bool
+    {
+        return isset($_SESSION[$key]);
+    }
+
+    public function remove(string $key): void
+    {
+        unset($_SESSION[$key]);
+    }
+
+    public function flash(string $key): mixed
+    {
+        $value = $this->get($key);
+        $this->remove($key);
+        return $value;
     }
 }

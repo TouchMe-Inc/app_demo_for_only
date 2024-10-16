@@ -3,6 +3,7 @@
 use App\Bootstrap\BindYandexSmartCaptcha;
 use App\Bootstrap\CreateDatabaseConnection;
 use App\Bootstrap\LoadConfiguration;
+use App\Bootstrap\StartSession;
 use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\UserController;
@@ -30,6 +31,7 @@ $app->router()
 // Bootstrap application
 $app->bootstrap([
     LoadConfiguration::class,
+    StartSession::class,
     CreateDatabaseConnection::class,
     BindYandexSmartCaptcha::class,
 ]);

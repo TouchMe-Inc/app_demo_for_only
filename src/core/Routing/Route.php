@@ -27,14 +27,17 @@ class Route implements RouteInterface
      */
     private Closure|array $handler;
 
+    private array $middlewares;
+
     /**
      * Create route instance.
      *
      * @param string $method
      * @param string $uri
      * @param mixed $handler
+     * @param array $middlewares
      */
-    public function __construct(string $method, string $uri, Closure|array $handler)
+    public function __construct(string $method, string $uri, Closure|array $handler, array $middlewares = [])
     {
         $this->setMethod($method);
 
@@ -45,6 +48,8 @@ class Route implements RouteInterface
         $this->parameterNames = $parameters;
 
         $this->handler = $handler;
+
+        $this->middlewares = $middlewares;
     }
 
     /**

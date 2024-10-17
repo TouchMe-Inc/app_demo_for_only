@@ -49,8 +49,8 @@ class Request implements RequestInterface
         $this->cookies = new ParameterStorage($cookies);
         $this->files = new ParameterStorage($files);
 
-        $this->method = $this->server->get($server['REQUEST_METHOD'], Request::METHOD_GET);
-        $this->uri = $this->prepareUri($this->server->get($server['REQUEST_URI'], '/'));
+        $this->method = $this->server->get('REQUEST_METHOD', Request::METHOD_GET);
+        $this->uri = $this->prepareUri($this->server->get('REQUEST_URI', '/'));
         $this->session = null;
     }
 

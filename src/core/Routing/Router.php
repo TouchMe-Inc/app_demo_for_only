@@ -144,14 +144,14 @@ class Router
 
         $callbackParameters = [];
 
-        if ($route->getVariableNames() && preg_match($route->getRegex(), $request->getUri(), $matches) && $matches) {
+        if ($route->getParameterNames() && preg_match($route->getPattern(), $request->getUri(), $matches) && $matches) {
             $variableValues = array_slice($matches, 1);
 
-            if (count($variableValues) !== count($route->getVariableNames())) {
+            if (count($variableValues) !== count($route->getParameterNames())) {
                 throw new Exception("Route variables do not match.");
             }
 
-            $callbackParameters = array_combine($route->getVariableNames(), $variableValues);
+            $callbackParameters = array_combine($route->getParameterNames(), $variableValues);
         }
 
         $resolvedHandler = $this->resolveHandler($route->getHandler());

@@ -3,9 +3,9 @@
 namespace Core\Routing;
 
 use Closure;
-use Exception;
+use Core\Routing\Interface\Route as RouteInterface;
 
-class Route
+class Route implements RouteInterface
 {
     /**
      * @var string
@@ -15,12 +15,12 @@ class Route
     /**
      * @var string
      */
-    private string $regex;
+    private string $pattern;
 
     /**
      * @var array
      */
-    private array $variableNames;
+    private array $parameterNames;
 
     /**
      * @var mixed
@@ -38,11 +38,11 @@ class Route
     {
         $this->setMethod($method);
 
-        list($regex, $variableNames) = $this->parseUri($uri);
+        [$pattern, $parameters] = $this->parseUri($uri);
 
-        $this->regex = $regex;
+        $this->pattern = $pattern;
 
-        $this->variableNames = $variableNames;
+        $this->parameterNames = $parameters;
 
         $this->handler = $handler;
     }
@@ -66,17 +66,17 @@ class Route
     /**
      * @return string
      */
-    public function getRegex(): string
+    public function getPattern(): string
     {
-        return $this->regex;
+        return $this->pattern;
     }
 
     /**
      * @return array
      */
-    public function getVariableNames(): array
+    public function getParameterNames(): array
     {
-        return $this->variableNames;
+        return $this->parameterNames;
     }
 
     /**
@@ -93,7 +93,7 @@ class Route
      */
     public function compareMethod($method): bool
     {
-        return $this->method === $method;
+        return $this->getMethod() === $method;
     }
 
     /**
@@ -102,7 +102,7 @@ class Route
      */
     public function compareUri(string $uri): bool
     {
-        if (preg_match($this->getRegex(), $uri) !== 1) {
+        if (preg_match($this->getPattern(), $uri) !== 1) {
             return false;
         }
 
@@ -115,44 +115,14 @@ class Route
      */
     private function parseUri(string $uri): array
     {
-        $variableNames = [];
+        $pattern = '~' . $uri . '~';
+        $parameters = [];
 
-        if (preg_match_all("~\{\s* ([a-zA-Z0-9_]*) \s*(?:: \s* ([^{]+(?:\{.*?})?))?}\??~x", $uri, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER) === 0) {
-            return ["~^{$uri}\$~", $variableNames];
+        if (preg_match_all('~{(.*?)}~', $uri, $matches) === 1) {
+            $pattern = str_replace($matches[0], "([^/]+)", $pattern);
+            $parameters = $matches[1];
         }
 
-        $regex = [];
-
-        $lastOffset = 0;
-
-        foreach ($matches as $set) {
-            $offset = (int)$set[0][1];
-
-            foreach (preg_split('~(/)~u', substr($uri, $lastOffset, $offset - $lastOffset), 0, PREG_SPLIT_DELIM_CAPTURE) as $static) {
-                if ($static) {
-                    $regex[] = $static;
-                }
-            }
-
-            $variableNames[] = $set[1][0];
-
-            $regexPart = (isset($set[2]) ? trim($set[2][0]) : '[^/]+');
-
-            $regex[] = '(' . $regexPart . ')';
-
-            $lastOffset = $offset + strlen($set[0][0]);
-        }
-
-        $templateLength = strlen($uri);
-
-        if ($lastOffset < $templateLength) {
-            foreach (preg_split('~(/)~u', substr($uri, $lastOffset, $templateLength - $lastOffset), 0, PREG_SPLIT_DELIM_CAPTURE) as $static) {
-                if ($static) {
-                    $regex[] = $static;
-                }
-            }
-        }
-
-        return ["~^" . implode('', $regex) . "$~", $variableNames];
+        return [$pattern, $parameters];
     }
 }

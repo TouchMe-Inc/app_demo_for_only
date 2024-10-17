@@ -26,7 +26,7 @@ interface Route
      * @param string $uri
      * @return bool
      */
-    public function compareUrl(string $uri): bool;
+    public function compareUri(string $uri): bool;
 
     /**
      * @return RouteHandler

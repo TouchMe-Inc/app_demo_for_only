@@ -88,10 +88,10 @@ class Route implements RouteInterface
     }
 
     /**
-     * @param $method
+     * @param string $method
      * @return bool
      */
-    public function compareMethod($method): bool
+    public function compareMethod(string $method): bool
     {
         return $this->getMethod() === $method;
     }

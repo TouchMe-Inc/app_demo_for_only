@@ -1,4 +1,4 @@
-# Demo for Only
+# Demo for [hidden]
 
 ## Specification
 > Написать формы регистрации, авторизации, страницу профиля:

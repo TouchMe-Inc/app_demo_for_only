@@ -1,4 +1,5 @@
 # Demo for [hidden]
+I created this repository as a solution to a test task for the vacancy "php programmer". Unfinished (and will not be completed unless needed)
 
 ## Specification
 > Написать формы регистрации, авторизации, страницу профиля:
